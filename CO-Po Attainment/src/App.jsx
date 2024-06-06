@@ -7,21 +7,18 @@ import StudentDetail from './screens/StudentDetails/StudentDetail'
 import Navbar from './screens/nav/Navbar';
 import Sidebar from './screens/nav/Sidebar';
 import { useState } from 'react';
+import Homepage from './screens/homepage/Homepage';
+import AddSubjects from './screens/admin/AddSubjects';
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
+  
   return (
     <div className='vh-100 vw-100 container-fluid'>
-      {/* <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-      <Sidebar isOpen={isSidebarOpen} /> */}
-      <Header />
-      {/* <StudentDetail /> */}
-      <AddTeacherForm />
+     {/* <Homepage /> */}
+     <AddSubjects />
+      {/* <Header />
+      <StudentDetail /> */}
+      {/* <AddTeacherForm /> */}
       {/* Your main content goes here */}
     </div>
   );

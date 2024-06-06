@@ -3,32 +3,32 @@ import axios from 'axios';
 
 function AddTeacherForm() {
 
-    const subjectsSemI = [
-        { "107001": "Engineering Mathematics-I" },
-        { "107002": "Engineering Physics" },
-        { "107009": "Engineering Chemistry" },
-        { "102003": "Systems in Mechanical Engineering" },
-        { "103004": "Basic Electrical Engineering" },
-        { "104010": "Basic Electronics Engineering" },
-        { "110005": "Programming and Problem Solving" },
-        { "101011": "Engineering Mechanics" },
-        { "111006": "Workshop" },
-        { "101007": "Audit Course 1" }
-    ];
+    // const subjectsSemI = [
+    //     { "107001": "Engineering Mathematics-I" },
+    //     { "107002": "Engineering Physics" },
+    //     { "107009": "Engineering Chemistry" },
+    //     { "102003": "Systems in Mechanical Engineering" },
+    //     { "103004": "Basic Electrical Engineering" },
+    //     { "104010": "Basic Electronics Engineering" },
+    //     { "110005": "Programming and Problem Solving" },
+    //     { "101011": "Engineering Mechanics" },
+    //     { "111006": "Workshop" },
+    //     { "101007": "Audit Course 1" }
+    // ];
 
-    const subjectsSemII = [
-        { "107008": "Engineering Mathematics-II" },
-        { "107002": "Engineering Physics" },
-        { "107009": "Engineering Chemistry" },
-        { "103004": "Basic Electrical Engineering" },
-        { "104010": "Basic Electronics Engineering" },
-        { "110005": "Programming and Problem Solving" },
-        { "101011": "Engineering Mechanics" },
-        { "102012": "Engineering Graphics" },
-        { "110013": "Project Based Learning" },
-        { "101014": "Audit Course 2" },
-        { "107015": "Audit Course 2" }
-    ];
+    // const subjectsSemII = [
+    //     { "107008": "Engineering Mathematics-II" },
+    //     { "107002": "Engineering Physics" },
+    //     { "107009": "Engineering Chemistry" },
+    //     { "103004": "Basic Electrical Engineering" },
+    //     { "104010": "Basic Electronics Engineering" },
+    //     { "110005": "Programming and Problem Solving" },
+    //     { "101011": "Engineering Mechanics" },
+    //     { "102012": "Engineering Graphics" },
+    //     { "110013": "Project Based Learning" },
+    //     { "101014": "Audit Course 2" },
+    //     { "107015": "Audit Course 2" }
+    // ];
 
     const subjectsSemIII = [
         { "210241": "Discrete Mathematics" },
@@ -145,7 +145,7 @@ function AddTeacherForm() {
             }
         })
             .then(response => {
-                console.log('Form data submitted successfully:', response.data);
+                console.log(response.data);
                 // Do something with the response data if needed
             })
             .catch(error => {
@@ -172,11 +172,11 @@ function AddTeacherForm() {
                 <div className='my-5'></div>
                 <div className='d-flex'>
 
-                    {[subjectsSemI, subjectsSemII, subjectsSemIII, subjectsSemIV, subjectsSemV, subjectsSemVI].map((subjects, semesterIndex) => (
+                    {[subjectsSemIII, subjectsSemIV, subjectsSemV, subjectsSemVI].map((subjects, semesterIndex) => (
                         <div className='border border-danger w-25 mx-3 px-2' key={semesterIndex}>
-                            <h2>Sem {semesterIndex + 1}</h2>
+                            <h2 className='ms-3'>Sem {semesterIndex + 3}</h2>
                             {subjects.map((subject, index) => (
-                                <div className="form-check form-check " key={index}>
+                                <div className="form-check form-check mx-3 " key={index}>
                                     <input className="form-check-input" type="checkbox" id={`sem${semesterIndex + 1}Sub${index}`} value={`${Object.entries(subject)[0][0]}:${Object.entries(subject)[0][1]}`} onChange={handleCheckboxChange} />
                                     <label className="form-check-label" htmlFor={`sem${semesterIndex + 1}Sub${index}`}>{Object.entries(subject)[0][0]}: {Object.entries(subject)[0][1]}</label>
                                 </div>
@@ -185,7 +185,7 @@ function AddTeacherForm() {
                     ))}
 
                 </div>
-                <button type="submit" className='btn btn-primary'>Submit</button>
+                <button type="submit" className='btn btn-primary mt-3 flex justify-center align-center'>Submit</button>
             </form>
         </div>
     );

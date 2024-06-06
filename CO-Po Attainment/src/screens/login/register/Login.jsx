@@ -40,7 +40,7 @@ function Login() {
                 withCredentials: true
             });
             const token = Cookies.get('subject')
-            console.log('LoggedIn successfully:', token);
+            console.log('LoggedIn successfully:',response.data);
             return token;
             // Do something with the response data if needed
         } catch (error) {
