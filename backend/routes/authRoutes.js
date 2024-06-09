@@ -3,8 +3,8 @@
 import express from 'express';
 import cors from 'cors';
 import { test, registerUser, loginUser, addTeacher } from "../Controllers/authControllers.js";
-import { createBatch, findMatchingSubjectsForTeacher } from '../Controllers/batchController.js';
-import { CreateStudentDetail } from "../Controllers/studentDetailController.js"
+import { FindSubjectData, createBatch, createBatchStudents, findMatchingSubjectsForTeacher, getBatchStudentData } from '../Controllers/batchController.js';
+import { CreateStudentDetail, getstudentdetailsubejectwise } from "../Controllers/studentDetailController.js"
 import { addSubjects } from '../Controllers/semSubjectController.js';
 
 const router = express.Router();
@@ -24,5 +24,9 @@ router.post('/addSubjects', addSubjects)
 router.post('/addTeacher', addTeacher)
 router.post('/addstudent', CreateStudentDetail)
 router.get('/getbatchsubjects', findMatchingSubjectsForTeacher)
+router.post('/batchstudentdata',createBatchStudents)
+router.get('/getbatchstudentdata',getBatchStudentData)
+router.get('/findsubjectdata', FindSubjectData)
+router.get('/get', getstudentdetailsubejectwise)
 
 export default router;

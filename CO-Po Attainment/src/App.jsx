@@ -9,15 +9,26 @@ import Sidebar from './screens/nav/Sidebar';
 import { useState } from 'react';
 import Homepage from './screens/homepage/Homepage';
 import AddSubjects from './screens/admin/AddSubjects';
+import StudentData from './screens/StudentDataBatchWise';
+import StudentDataElectiveBatchWise from './screens/StudentDataElectiveBatchWise';
+import StudentDetailTemp from './screens/StudentDetails/Temp';
 
 function App() {
   
   return (
     <div className='vh-100 vw-100 container-fluid'>
+     {/* <Homepage />
+     <Header />
+
+      */}
      {/* <Homepage /> */}
-     <AddSubjects />
+     {/* <AddSubjects /> */}
       {/* <Header />
       <StudentDetail /> */}
+      <Header />
+     <StudentDetailTemp />
+      {/* <StudentData /> */}
+      {/* <StudentDataElectiveBatchWise /> */}
       {/* <AddTeacherForm /> */}
       {/* Your main content goes here */}
     </div>

@@ -1,0 +1,9 @@
+.scrollable-content {
+    overflow-y: auto;
+    height: calc(100vh - 80px); /* Adjust this value if needed */
+    padding: 0 15px; /* Add some padding for better spacing */
+}
+
+.container-fluid {
+    padding: 0; /* Remove default padding */
+}

@@ -4,6 +4,8 @@ import { Subject } from "../models/subject.js"
 import { Teacher } from "../models/teacher.js";
 import { createSubject } from "./subjectController.js";
 import { Types } from 'mongoose';
+import { BatchStudents } from "../models/batch_Student.js";
+import { Subject_Data } from "../models/subject_data.js";
 
 const { ObjectId } = Types;
 
@@ -51,6 +53,43 @@ const createBatch = async (req, res) => {
 //     }
 // };
 
+
+ const FindSubjectData = async (req,res) => {
+    try {
+        const {batchyear} = req.body;
+
+        const batchdata = await Batch.find({batchyear:batchyear});
+        
+        const subjectdataarray = batchdata[0]["subjects"]
+        const temparray = []
+        const temp2 =[]
+        for (const subjectId of subjectdataarray) {
+            const subject = await Subject.findById(subjectId.toString());
+            if (subject) {
+                temparray.push({
+                    subject_code: subject.subject_code,
+                    subject_name: subject.subject_name,
+                    batch_id: subject.batch_id,
+                    subject_data: subject.subject_data
+                });
+            }
+            if (subject){
+                const subjectdata = await Subject_Data.findById(subject["subject_data"].toString())
+                const {course_objective, course_outcome, co_po_pso_map, student_details } = subjectdata;
+                const temp = [course_outcome,course_objective, co_po_pso_map,student_details];
+                console.log(temp);
+            }
+        
+        
+
+        }
+        // console.table(temparray);
+        return res.status(200).json(batchdata);
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+ }
+
 const findMatchingSubjectsForTeacher = async (req, res) => {
     try {
         const { name } = req.body;
@@ -80,4 +119,45 @@ const findMatchingSubjectsForTeacher = async (req, res) => {
 }
 
 
-export { createBatch, findMatchingSubjectsForTeacher };
+const createBatchStudents = async (req, res) => {
+    const { batchYear, studentdata } = req.body;
+
+    if (!batchYear || !studentdata) {
+        return res.status(400).json({ message: "Batch year and student data are required" });
+    }
+
+    try {
+        const batchStudents = await BatchStudents.create({ batchYear, studentdata });
+        console.log('Batch created:', batchStudents);
+        return res.status(200).json(batchStudents);
+    } catch (error) {
+        console.error('Error creating batch:', error);
+        return res.status(400).json({ message: error.message });
+    }
+};
+
+const getBatchStudentData = async (req, res) => {
+    const batchYear = "2021-25";
+    console.log(batchYear);
+    if (!batchYear) {
+        return res.status(400).json({ message: "Batch year is required" });
+    }
+
+    try {
+        const batchStudents = await BatchStudents.findOne({ batchYear });
+
+        if (!batchStudents) {
+            return res.status(404).json({ message: "Batch not found" });
+        }
+
+
+        return res.status(200).json(batchStudents);
+    } catch (error) {
+        console.error('Error retrieving batch data:', error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+export { createBatch, findMatchingSubjectsForTeacher, createBatchStudents ,getBatchStudentData, FindSubjectData};

@@ -11,7 +11,7 @@ function Homepage() {
     };
   
     return (
-    <div>
+    <div className='mb-5'>
          <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
       <Sidebar isOpen={isSidebarOpen} />
     </div>
