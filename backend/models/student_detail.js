@@ -41,7 +41,7 @@ const coAttainUESchema = new Schema({
 });
 
 const studentDetailsSchema = new Schema({
-    roll_no: { type: String },
+    roll_no: { type: String ,unique:true},
     prn: { type: String },
     name: { type: String },
     co_attain_UE: { type: coAttainUESchema },

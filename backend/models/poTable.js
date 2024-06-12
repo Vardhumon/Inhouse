@@ -1,7 +1,10 @@
+// models/psoModel.js
+
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const percentageSchema = new Schema({
+// Define the schema
+const psoSchema = new mongoose.Schema({
   subject_id: {
     type: Schema.Types.ObjectId,
     ref: "Subject"
@@ -23,6 +26,7 @@ subject_data_id: {
   }]
 });
 
-const PercentageModel = mongoose.model('PercentageModel', percentageSchema);
+// Create the model
+const PsoModel = mongoose.model('PsoModel', psoSchema);
 
-export {PercentageModel};
+export  {PsoModel};

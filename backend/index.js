@@ -4,13 +4,14 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import router from './routes/route.js';
-import percentageRoute from './routes/percentage_route.js';
 import authRoutes from './routes/authRoutes.js';
 import cookieParser from "cookie-parser";
 const PORT = process.env.PORT || 8000;
 
 const app = express();
+
+
+const router = express.Router();
 
 // Middleware
 app.use(cors({
@@ -23,11 +24,10 @@ app.use(cookieParser())
 
 // Routes
 app.use('/', router);
-app.use('/', percentageRoute);
 app.use('/', authRoutes);
 
 // Database connection
-mongoose.connect('mongodb://127.0.0.1:27017/beta')
+mongoose.connect('mongodb://127.0.0.1:27017/temp')
   .then(() => {
     console.log('Connected to the database');
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

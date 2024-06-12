@@ -1,8 +1,8 @@
 // routes.js
 
 import express from 'express';
-import PsoModel from '../models/co_po_pso.js';
-import PercentageModel from '../models/percentage.js';
+import {PsoModel} from '../models/poTable.js';
+import {PercentageModel} from '../models/percentage.js';
 
 const route = express.Router();
 

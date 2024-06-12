@@ -55,7 +55,7 @@ function StudentData() {
 
         const studentsB = namesArrayB.map((name, index) => ({
             name: name.trim(),
-            roll_number: `TEBIDB${String(index + 1).padStart(2, '0')}`,
+            roll_number: `TEAIDB${String(index + 1).padStart(2, '0')}`,
             prn_number: prnArrayB[index].trim()
         }));
 

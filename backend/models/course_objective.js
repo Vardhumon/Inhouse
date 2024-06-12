@@ -8,6 +8,10 @@ const courseObjectiveSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Subject"
     },
+    subject_data_id: {
+        type: Schema.Types.ObjectId,
+        ref:"Subject_Data"
+    },
     subject_name: {
         type: String,
     },

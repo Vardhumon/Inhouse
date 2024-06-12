@@ -2,63 +2,75 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
+const fetchStudentDetails = async () => {
+    const response = await fetch('http://localhost:8000/get'); // Replace with your API endpoint
+    const backendData = await response.json();
+    return backendData;
+};
+
+const fetchBackendData = async () => {
+    const response = await fetch('http://localhost:8000/getbatchstudentdata'); // Replace with your API endpoint
+    const studentDetails = await response.json();
+    const stuarr = studentDetails.studentdata.flat();
+    console.log("imp", stuarr);
+    return stuarr;
+};
+
 function StudentDetailTemp() {
     const [students, setStudents] = useState([]);
+    const [backendStudents, setBackendStudents] = useState([]);
+    const [studentDetails, setStudentDetails] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
     const [totals, setTotals] = useState([]);
 
     useEffect(() => {
-        // Fetch student details (roll, prn, name)
-        const fetchStudentDetails = async () => {
-            const response = await fetch('http://localhost:8000/get'); // Replace with your API endpoint
-            const backendData = await response.json();
-            return backendData;
-        };
-
-        // Fetch backend data (ESE, MidSem, PR_OR, TermWork, CO details)
-        const fetchBackendData = async () => {
-            const response = await fetch('http://localhost:8000/getbatchstudentdata'); // Replace with your API endpoint
-            const studentDetails = await response.json();
-            const stuarr = studentDetails.studentdata.flat();
-            console.log("imp",stuarr);
-            return stuarr;
-        };
-
-        // Combine both data sources into the state
         const fetchData = async () => {
             try {
-                const [backendData, studentdata] = await Promise.all([fetchStudentDetails(), fetchBackendData()]);
-                console.log("imp2",studentdata);
-                const formattedStudents = studentdata.map((student, index) => {
-                    const backendStudent = backendData[index] || {};
-                    const co_attain_UE = backendStudent.co_attain_UE || {};
-                    const co_attain_IE_CW = backendStudent.co_attain_IE_CW || {};
-
-                    return {
-                        name: student.name,
-                        roll: student.roll_number,
-                        prn: student.prn_number,
-                        ese: co_attain_UE.ESE,
-                        midsem: co_attain_UE.MidSem,
-                        pr_or: co_attain_UE.PR_OR,
-                        termwork: co_attain_UE.TermWork,
-                        CO1: [co_attain_IE_CW.CO1?.UT1, co_attain_IE_CW.CO1?.CW],
-                        CO2: [co_attain_IE_CW.CO2?.UT1, co_attain_IE_CW.CO2?.CW],
-                        CO3: [co_attain_IE_CW.CO3?.UT2, co_attain_IE_CW.CO3?.CW],
-                        CO4: [co_attain_IE_CW.CO4?.UT2, co_attain_IE_CW.CO4?.CW],
-                        CO5: [co_attain_IE_CW.CO5?.CW],
-                        CO6: [co_attain_IE_CW.CO6?.CW]
-                    };
-                });
-                console.log("hello", formattedStudents);
-                setStudents(formattedStudents);
+                const backendData = await fetchStudentDetails();
+                const studentdata = await fetchBackendData();
+                setBackendStudents(backendData);
+                console.log(backendData);
+                setStudentDetails(studentdata);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchData();
+        const fetchDataWithDelay = () => {
+            setTimeout(fetchData, 1000); // Delay of 1 second
+        };
+
+        fetchDataWithDelay();
     }, []);
+
+    useEffect(() => {
+        if (studentDetails.length) {
+            const formattedStudents = studentDetails.map((student, index) => {
+                const backendStudent = backendStudents.filter(backendstudent => student.roll_number === backendstudent.roll_number) || {};
+                console.log(backendStudent);
+                const co_attain_UE = backendStudent[0].co_attain_UE || {};
+                const co_attain_IE_CW = backendStudent[0].co_attain_IE_CW || {};
+
+                return {
+                    name: student.name,
+                    roll: student.roll_number,
+                    prn: student.prn_number,
+                    ese: co_attain_UE.ESE,
+                    midsem: co_attain_UE.MidSem,
+                    pr_or: co_attain_UE.PR_OR,
+                    termwork: co_attain_UE.TermWork,
+                    CO1: [co_attain_IE_CW.CO1?.UT1, co_attain_IE_CW.CO1?.CW],
+                    CO2: [co_attain_IE_CW.CO2?.UT1, co_attain_IE_CW.CO2?.CW],
+                    CO3: [co_attain_IE_CW.CO3?.UT2, co_attain_IE_CW.CO3?.CW],
+                    CO4: [co_attain_IE_CW.CO4?.UT2, co_attain_IE_CW.CO4?.CW],
+                    CO5: [co_attain_IE_CW.CO5?.CW],
+                    CO6: [co_attain_IE_CW.CO6?.CW]
+                };
+            });
+            console.log("hello1 ",formattedStudents);
+            setStudents(formattedStudents);
+        }
+    }, [backendStudents, studentDetails]);
 
     useEffect(() => {
         calculateAllTotals();
@@ -105,7 +117,7 @@ function StudentDetailTemp() {
         setEditIndex(index);
     };
 
-    const handleAllRowsSubmit = async(event) => {
+    const handleAllRowsSubmit = async (event) => {
         event.preventDefault();
         const StudentDetails = students.map((student, index) => ({
             ...student,
@@ -129,9 +141,8 @@ function StudentDetailTemp() {
                 console.log(response.data);
             })
             .catch(error => {
-                console.log("SOmetging is wrong ", error);
+                console.log("Something is wrong", error);
             })
-
     };
 
     return (

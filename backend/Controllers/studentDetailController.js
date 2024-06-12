@@ -47,7 +47,7 @@ const CreateStudentDetail = async (req, res) => {
                 studentId = updatedStudent._id;
             }
 
-            temparr.push(studentId);
+            temparr.push(studentId.toString());
             return studentId;
         }));
 
@@ -75,8 +75,9 @@ const getstudentdetailsubejectwise = async (req, res) => {
         const studentDetailsPromises = student_details.map(async (studentId) => {
             const studentdetail = await StudentDetail.findById(studentId.toString());
             // console.log(studentdetail);
-            const { co_attain_UE, co_attain_IE_CW } = studentdetail;
-            return { co_attain_UE, co_attain_IE_CW };
+            const { co_attain_UE, co_attain_IE_CW ,roll_no} = studentdetail;
+            const roll_number = roll_no
+            return { co_attain_UE, co_attain_IE_CW ,roll_number};
         });
 
         const studentDetails = await Promise.all(studentDetailsPromises);

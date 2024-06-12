@@ -12,6 +12,7 @@ import AddSubjects from './screens/admin/AddSubjects';
 import StudentData from './screens/StudentDataBatchWise';
 import StudentDataElectiveBatchWise from './screens/StudentDataElectiveBatchWise';
 import StudentDetailTemp from './screens/StudentDetails/Temp';
+import PsoTable from './screens/PSO/PsoTable';
 
 function App() {
   
@@ -26,8 +27,9 @@ function App() {
       {/* <Header />
       <StudentDetail /> */}
       <Header />
-     <StudentDetailTemp />
+     {/* <StudentDetailTemp /> */}
       {/* <StudentData /> */}
+      <PsoTable />
       {/* <StudentDataElectiveBatchWise /> */}
       {/* <AddTeacherForm /> */}
       {/* Your main content goes here */}
