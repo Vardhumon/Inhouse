@@ -10,6 +10,7 @@ const subjectDataSchema = new Schema({
     co_po_pso_map: { type: Schema.Types.ObjectId, ref: "PsoModel" },
     perc_co_po_pso_map: {type : Schema.Types.ObjectId, ref: "PercentageModel"},
     co_po_pso_art:{type : Schema.Types.ObjectId, ref: "CourseArticulationModel"},
+    markingScehme:{type: Schema.Types.ObjectId, ref:"MarkingModel"},
     student_details: [{ type: String}],
     direct_po_attain: [Number],
     indirect_po_attain: [Number],

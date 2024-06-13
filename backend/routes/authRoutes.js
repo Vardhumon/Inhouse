@@ -7,6 +7,9 @@ import { FindSubjectData, createBatch, createBatchStudents, findMatchingSubjects
 import { CreateStudentDetail, getstudentdetailsubejectwise } from "../Controllers/studentDetailController.js"
 import { addSubjects } from '../Controllers/semSubjectController.js';
 import { getCoPO, updateCoPo } from '../Controllers/copoController.js';
+import { updateCourseObjective } from '../Controllers/courseObjectiveController.js';
+import { updateCourseOutcome } from '../Controllers/courseOutcomeController.js';
+import { getMarkingModel, updateMarkingModel } from '../Controllers/markingController.js';
 
 const router = express.Router();
 
@@ -31,5 +34,8 @@ router.get('/findsubjectdata', FindSubjectData)
 router.get('/get', getstudentdetailsubejectwise)
 router.post('/copo/:subject_data_id', updateCoPo)
 router.get('/copo/:subject_data_id', getCoPO);
-
+router.post('/courseobj/:subject_data_id', updateCourseObjective)
+router.post('/courseout/:subject_data_id',updateCourseOutcome)
+router.post('/marking/:subject_data_id',updateMarkingModel)
+router.get('/getmarking', getMarkingModel)
 export default router;

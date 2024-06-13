@@ -10,4 +10,16 @@ const createCourseOutcome = async (subject_id) => {
     }
 };
 
-export { createCourseOutcome };
+const updateCourseOutcome = async (req,res) => {
+    try {
+        const {subject_data_id} = req.params;
+        const {co,outcome} = req.body;
+        const CO = await CourseOutcome.updateOne({subject_data_id: subject_data_id},{co: co, outcome: outcome})
+        
+        return res.status(200).json(["Course Outcome Updated Succesfully!",CO])
+    } catch (error) {
+        return res.status(400).json(["Course Outcome Update UnSuccesfull!", error.message])
+        
+    }
+}
+export { createCourseOutcome, updateCourseOutcome };

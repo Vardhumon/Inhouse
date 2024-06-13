@@ -13,6 +13,8 @@ import StudentData from './screens/StudentDataBatchWise';
 import StudentDataElectiveBatchWise from './screens/StudentDataElectiveBatchWise';
 import StudentDetailTemp from './screens/StudentDetails/Temp';
 import PsoTable from './screens/PSO/PsoTable';
+import CourseOutcome from './screens/Course/CourseOutcome';
+import CourseObjectiveTable from './screens/Course/CourseObjective';
 
 function App() {
   
@@ -27,9 +29,11 @@ function App() {
       {/* <Header />
       <StudentDetail /> */}
       <Header />
-     {/* <StudentDetailTemp /> */}
+     <StudentDetailTemp />
       {/* <StudentData /> */}
-      <PsoTable />
+      {/* <PsoTable /> */}
+      {/* <CourseOutcome />
+      <CourseObjectiveTable /> */}
       {/* <StudentDataElectiveBatchWise /> */}
       {/* <AddTeacherForm /> */}
       {/* Your main content goes here */}
