@@ -29,11 +29,11 @@ function App() {
       {/* <Header />
       <StudentDetail /> */}
       <Header />
-     <StudentDetailTemp />
+     {/* <StudentDetailTemp /> */}
       {/* <StudentData /> */}
       {/* <PsoTable /> */}
-      {/* <CourseOutcome />
-      <CourseObjectiveTable /> */}
+      <CourseOutcome />
+      <CourseObjectiveTable />
       {/* <StudentDataElectiveBatchWise /> */}
       {/* <AddTeacherForm /> */}
       {/* Your main content goes here */}

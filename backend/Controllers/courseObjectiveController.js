@@ -12,7 +12,12 @@ const createCourseObjective = async (subject_id) => {
 
 const updateCourseObjective = async (req,res) => {
     try {
-        const {subject_data_id} = req.params;
+
+        //enter subject_data_id of the Objective you want to update
+        const subject_data_id = "666bff5ef727b898ec9fb884";
+
+
+        // const {subject_data_id} = req.params;
         const {objectives} = req.body;
         const CO = await CourseObjective.updateOne({subject_data_id: subject_data_id},{objectives: objectives })
         
@@ -23,4 +28,15 @@ const updateCourseObjective = async (req,res) => {
     }
 }
 
-export { createCourseObjective , updateCourseObjective};
+const getCourseObjectives= async(req,res) => {
+    try {
+        const subject_data_id = "666bff5ef727b898ec9fb884";
+        const courseObjective = await CourseObjective.find({subject_data_id:subject_data_id});
+        const {objectives} = courseObjective[0];
+        return res.status(200).json({objectives}) 
+    } catch (error) {
+        return res.status(400).json(error.message)
+    }
+}
+
+export { createCourseObjective , updateCourseObjective, getCourseObjectives};

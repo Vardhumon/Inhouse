@@ -27,7 +27,7 @@ app.use('/', router);
 app.use('/', authRoutes);
 
 // Database connection
-mongoose.connect('mongodb://127.0.0.1:27017/beta')
+mongoose.connect('mongodb://127.0.0.1:27017/temp')
   .then(() => {
     console.log('Connected to the database');
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

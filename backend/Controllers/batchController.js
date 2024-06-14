@@ -37,21 +37,6 @@ const createBatch = async (req, res) => {
     }
 };
 
-// const findBatchSubjects = async (req, res) => {
-//     try {
-//         const batchId = req.body._id;
-//         const teacherId = "6623a26002630af71ac039c1"; // Example teacher ID
-//         const aggregationResult = await findMatchingSubjectsForTeacher(teacherId);
-//         console.log(aggregationResult);
-//         // Extract subjects from the aggregation result
-//         // const teacherSubjects = result.length > 0 ? result[0].subjects : [];
-//         // const teacherSubjectNames = teacherSubjects.map(subject => subject.subject_name);
-
-//         return res.status(200).json(aggregationResult);
-//     } catch (error) {
-//         return res.status(404).json({ message: error.message });
-//     }
-// };
 
 
  const FindSubjectData = async (req,res) => {
@@ -138,7 +123,7 @@ const createBatchStudents = async (req, res) => {
 
 const getBatchStudentData = async (req, res) => {
     const batchYear = "2021-25";
-    console.log(batchYear);
+    // console.log(batchYear);
     if (!batchYear) {
         return res.status(400).json({ message: "Batch year is required" });
     }

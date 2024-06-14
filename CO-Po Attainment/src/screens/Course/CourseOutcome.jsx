@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const fetchData = async () => {
+    const response = await fetch('http://localhost:8000/courseoutcomes'); 
+    const outcome = await response.json();
+    console.log(outcome);
+    return outcome;
+};
+
 function CourseOutcome() {
-    const [data, setData] = useState([
-        { co: "CO502.1", outcome: "Summarize fundamental concepts of Computer Networks, architectures, protocols and technologies" },
-        { co: "CO502.2", outcome: "Analyze the working of physical layer protocols" },
-        { co: "CO502.3", outcome: "Analyze the working of different routing protocols and mechanisms" },
-        { co: "CO502.4", outcome: "Implement client-server applications using sockets" },
-        { co: "CO502.5", outcome: "Illustrate role of application layer with its protocols, client-server architectures" },
-        { co: "CO502.6", outcome: "Summarize concepts of MAC and ethernet" }
-    ]);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchDataAsync = async () => {
+            try {
+                const outcome = await fetchData();
+                const formattedData = outcome.co.map((co, index) => ({
+                    co: co,
+                    outcome: outcome.outcome[index]
+                }));
+                setData(formattedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataAsync();
+    }, []);
 
     const [editIndex, setEditIndex] = useState(null);
-    const [editedData, setEditedData] = useState([...data]);
+    const [editedData, setEditedData] = useState([]);
+
+    useEffect(() => {
+        setEditedData([...data]);
+    }, [data]);
 
     const handleEdit = (index) => {
         setEditIndex(index);
-        setEditedData([...data]); // Reset edited data
+        setEditedData([...data]);
     };
 
     const handleInputChange = (event, index, field) => {
@@ -27,11 +48,11 @@ function CourseOutcome() {
 
     const handleSave = (index) => {
         setEditIndex(null);
-        setData([...editedData]); // Save edited data
+        setData([...editedData]); 
     };
 
     return (
-        <div className="container py-4 w-100 fs-4 my-4">
+        <div className="container py-4 w-100 h-100 fs-4 my-4">
             <table className="table table-bordered">
                 <thead className="bg-success text-white text-center">
                     <tr>

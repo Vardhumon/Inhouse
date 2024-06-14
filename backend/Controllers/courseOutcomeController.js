@@ -12,7 +12,9 @@ const createCourseOutcome = async (subject_id) => {
 
 const updateCourseOutcome = async (req,res) => {
     try {
-        const {subject_data_id} = req.params;
+        //enter subject_data_id of the Outcome you want to update
+        const subject_data_id = "666bff5ef727b898ec9fb884";
+        // const {subject_data_id} = req.params;
         const {co,outcome} = req.body;
         const CO = await CourseOutcome.updateOne({subject_data_id: subject_data_id},{co: co, outcome: outcome})
         
@@ -22,4 +24,16 @@ const updateCourseOutcome = async (req,res) => {
         
     }
 }
-export { createCourseOutcome, updateCourseOutcome };
+
+const getCourseOutcome = async(req,res) => {
+    try {
+        const subject_data_id = "666bff5ef727b898ec9fb884";
+        const courseOutcome = await CourseOutcome.find({subject_data_id:subject_data_id});
+        console.log(courseOutcome[0]);
+        const {co,outcome} = courseOutcome[0];
+        return res.status(200).json({co,outcome}) 
+    } catch (error) {
+        return res.status(400).json(error.message)
+    }
+}
+export { createCourseOutcome, updateCourseOutcome, getCourseOutcome };

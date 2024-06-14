@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const fetchData = async () => {
+    const response = await fetch('http://localhost:8000/courseobjective');
+    const objective = await response.json();
+    return objective;
+};
+
 function CourseObjectiveTable() {
-    const [data, setData] = useState([
-        "To understand the Basics concepts of networking standards, protocols and technologies.",
-        "To learn the different signal transmission, multiplexing techniques.",
-        "To learn the role of protocols at various layers in the protocol stacks",
-        "To learn the different IEEE standards.",
-    ]);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchDataAsync = async () => {
+            try {
+                const outcome = await fetchData();
+                const formattedData = outcome["objectives"];
+                setData(formattedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataAsync();
+    }, []);
 
     const [editIndex, setEditIndex] = useState(null);
-    const [editedData, setEditedData] = useState([...data]);
+    const [editedData, setEditedData] = useState([]);
+
+    useEffect(() => {
+        setEditedData([...data]);
+    }, [data]);
 
     const handleEdit = (index) => {
         setEditIndex(index);
-        setEditedData([...data]); // Reset edited data
+        setEditedData([...data]); 
     };
 
     const handleInputChange = (event, index) => {
@@ -25,7 +44,7 @@ function CourseObjectiveTable() {
 
     const handleSave = (index) => {
         setEditIndex(null);
-        setData([...editedData]); // Save edited data
+        setData([...editedData]); 
     };
 
     return (
