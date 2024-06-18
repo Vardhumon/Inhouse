@@ -1,5 +1,5 @@
-import mongoose, { Mongoose } from "mongoose";
-const {Schema} = Mongoose;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const DirectPoSchema = new Schema({
     subject_id: {

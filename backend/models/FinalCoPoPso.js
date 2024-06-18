@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const attainTableSchema = new Schema({
+const FinalCoPoPsoSchema = new Schema({
     subject_id: {
         type: Schema.Types.ObjectId,
         ref: "Subject"
@@ -10,18 +10,17 @@ const attainTableSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref:"Subject_Data"
     },
-    TableName: String,
-    po:{
+    DirectPo80perc:{
         type:Array
     },
-    pso:{
+    IndirectPo20perc:{
         type:Array
     },
-    average:{
+    COPOPSOAttainment:{
         type:Array
     }
 })
 
-const AttainmentTable = mongoose.model("AttainmentTable", attainTableSchema)
+const FinalCoPoPso = mongoose.model("FinalCoPoPso",FinalCoPoPsoSchema)
 
-export {AttainmentTable};
+export {FinalCoPoPso};

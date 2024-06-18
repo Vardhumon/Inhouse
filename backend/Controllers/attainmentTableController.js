@@ -100,7 +100,7 @@ const createAttainmentTable = async (req, res) => {
             return parseFloat((val*0.8).toFixed(1))
         })
         const DirectPOAttainmentValues = percInternalExam.map((val,index) => {
-            return val+percUniversityExam[index]
+            return parseFloat((val+percUniversityExam[index]).toFixed(1))
         })
         const DirectPO = new DirectPOAttainment({subject_data_id:subject_data_id,InternalExam:InternalExam,
             UniversityExam:UniversityExam, percInternalExam:percInternalExam, percUniversityExam:percUniversityExam,DirectPO:DirectPOAttainmentValues
