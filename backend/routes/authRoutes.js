@@ -10,6 +10,7 @@ import { getCoPO, updateCoPo } from '../Controllers/copoController.js';
 import { getCourseObjectives, updateCourseObjective } from '../Controllers/courseObjectiveController.js';
 import { getCourseOutcome, updateCourseOutcome } from '../Controllers/courseOutcomeController.js';
 import { getMarkingModel, updateMarkingModel } from '../Controllers/markingController.js';
+import { authenticateToken, authenticateTokenSub } from '../Controllers/authmiddleware.js';
 
 const router = express.Router();
 
@@ -33,11 +34,15 @@ router.get('/findsubjectdata', FindSubjectData)
 router.get('/get', getstudentdetailsubejectwise)
 router.post('/copo/:subject_data_id', updateCoPo)
 router.get('/copo/:subject_data_id', getCoPO);
-router.post('/courseobj', updateCourseObjective)
-router.post('/courseout',updateCourseOutcome)
+router.post('/courseobj/:subject_data_id', updateCourseObjective)
+router.post('/course-outcome/:subject_data_id',updateCourseOutcome)
 router.post('/marking/:subject_data_id',updateMarkingModel)
 router.get('/getmarking', getMarkingModel)
-router.get('/courseobjective', getCourseObjectives)
-router.get('/courseoutcomes',getCourseOutcome)
-router.get('/findsubs',findTeacherSubs)
+router.get('/course-objective/:subject_data_id', getCourseObjectives)
+router.get('/course-outcome/:subject_data_id',getCourseOutcome)
+router.get('/findsubs',authenticateTokenSub,findTeacherSubs)
+router.post('/verifyToken', authenticateToken, (req, res) => {
+    const { id, email, isAdmin } = req.user;
+    res.status(200).json({ id, email, isAdmin });
+});
 export default router;

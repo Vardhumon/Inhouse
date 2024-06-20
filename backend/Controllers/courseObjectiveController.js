@@ -14,8 +14,8 @@ const updateCourseObjective = async (req,res) => {
     try {
 
         //enter subject_data_id of the Objective you want to update
-        const subject_data_id = "6674386cabe5a4b207fa6613";
-
+        const {subject_data_id} = req.params;
+        console.log(subject_data_id);
 
         // const {subject_data_id} = req.params;
         const {objectives} = req.body;
@@ -30,7 +30,7 @@ const updateCourseObjective = async (req,res) => {
 
 const getCourseObjectives= async(req,res) => {
     try {
-        const subject_data_id = "6674386cabe5a4b207fa6613";
+        const {subject_data_id} = req.params;
         const courseObjective = await CourseObjective.find({subject_data_id:subject_data_id});
         const {objectives} = courseObjective[0];
         return res.status(200).json({objectives}) 

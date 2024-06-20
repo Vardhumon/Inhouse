@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast } from 'react-hot-toast';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const fetchData = async () => {
-    const response = await fetch('http://localhost:8000/courseoutcomes'); 
+const fetchData = async (subdataid) => {
+    const response = await fetch(`http://localhost:8000/course-outcome/${subdataid}`);
     const outcome = await response.json();
     console.log(outcome);
     return outcome;
@@ -10,23 +12,26 @@ const fetchData = async () => {
 
 function CourseOutcome() {
     const [data, setData] = useState([]);
+    const { subname, subjectdataid } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDataAsync = async () => {
             try {
-                const outcome = await fetchData();
+                const outcome = await fetchData(subjectdataid);
                 const formattedData = outcome.co.map((co, index) => ({
                     co: co,
                     outcome: outcome.outcome[index]
                 }));
                 setData(formattedData);
+                setEditedData([...formattedData]); // Initialize editedData with fetched data
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchDataAsync();
-    }, []);
+    }, [subname, subjectdataid]);
 
     const [editIndex, setEditIndex] = useState(null);
     const [editedData, setEditedData] = useState([]);
@@ -37,7 +42,6 @@ function CourseOutcome() {
 
     const handleEdit = (index) => {
         setEditIndex(index);
-        setEditedData([...data]);
     };
 
     const handleInputChange = (event, index, field) => {
@@ -48,7 +52,31 @@ function CourseOutcome() {
 
     const handleSave = (index) => {
         setEditIndex(null);
-        setData([...editedData]); 
+        setData([...editedData]); // Update original data with edited data
+    };
+
+    const submitData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/course-outcome/${subjectdataid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ co: editedData.map(item => item.co), outcome: editedData.map(item => item.outcome) }),
+            });
+            if (response.ok) {
+                toast.success('Outcomes submitted successfully');
+            } else {
+                toast.error('Failed to submit outcomes');
+            }
+        } catch (error) {
+            console.error('Error submitting outcomes:', error);
+            toast.error('Error submitting outcomes');
+        }
+    };
+
+    const navigateToCourseObjectives = () => {
+        navigate(`/${subname}/course-objective/${subjectdataid}`);
     };
 
     return (
@@ -97,6 +125,10 @@ function CourseOutcome() {
                     ))}
                 </tbody>
             </table>
+            <button className='btn btn-primary ms-5' onClick={submitData}>Submit</button>
+            <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToCourseObjectives}>
+                Back to Course Objectives
+            </button>
         </div>
     );
 }

@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useParams, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-const fetchData = async () => {
-    const response = await fetch('http://localhost:8000/courseobjective');
+const fetchData = async (subdataid) => {
+    const response = await fetch(`http://localhost:8000/course-objective/${subdataid}`);
     const objective = await response.json();
+    console.log(objective);
     return objective;
 };
 
+
 function CourseObjectiveTable() {
     const [data, setData] = useState([]);
-
+    const {subjectdataid,subname} = useParams();
+    const navigate = useNavigate();
+    console.log(subname);
     useEffect(() => {
         const fetchDataAsync = async () => {
             try {
-                const outcome = await fetchData();
+                const outcome = await fetchData(subjectdataid);
                 const formattedData = outcome["objectives"];
                 setData(formattedData);
             } catch (error) {
@@ -45,6 +51,30 @@ function CourseObjectiveTable() {
     const handleSave = (index) => {
         setEditIndex(null);
         setData([...editedData]); 
+    };
+
+    const submitData = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/courseobj/${subjectdataid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ objectives: editedData }),
+            });
+            if (response.ok) {
+                toast.success('Objectives submitted successfully');
+            } else {
+                toast.error('Failed to submit objectives');
+            }
+        } catch (error) {
+            console.error('Error submitting objectives:', error);
+            toast.error('Error submitting objectives');
+        }
+    };
+
+    const navigateToCourseOutcome = () => {
+        navigate(`/${subname}/course-outcome/${subjectdataid}`); // Adjust the URL structure as needed
     };
 
     return (
@@ -83,7 +113,11 @@ function CourseObjectiveTable() {
                         </tr>
                     ))}
                 </tbody>
+                <button className='ms-5' onClick={submitData}>Submit</button>
             </table>
+            <button className='btn btn-primary position-fixed bottom-0 end-0 m-4' onClick={navigateToCourseOutcome}>
+                Go to Course Outcome
+            </button>
         </div>
     );
 }

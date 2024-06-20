@@ -1,14 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
-import { useState } from 'react';
-import AddTeacherForm from './screens/admin/AddTeacherForm';
-import Header from './Header/Header';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import Login from './screens/login/register/Login';
-import StudentDetail from './screens/StudentDetails/StudentDetail';
 import Navbar from './screens/nav/Navbar';
 import Sidebar from './screens/nav/Sidebar';
 import Homepage from './screens/homepage/Homepage';
+import AddTeacherForm from './screens/admin/AddTeacherForm';
 import AddSubjects from './screens/admin/AddSubjects';
+import StudentDetail from './screens/StudentDetails/StudentDetail';
 import StudentData from './screens/StudentDataBatchWise';
 import StudentDataElectiveBatchWise from './screens/StudentDataElectiveBatchWise';
 import StudentDetailTemp from './screens/StudentDetails/Temp';
@@ -20,14 +21,37 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Mock authentication function
-  const login = (credentials) => {
-    if (credentials === 123) {
-      setIsAuthenticated(true);
-      console.log("User authenticated");
-      console.log(isAuthenticated);
-    }
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const token = Cookies.get('token'); // Retrieve the token from cookies
+
+      if (token) {
+        try {
+          const response = await axios.post('http://localhost:8000/verifyToken', { token }); // Replace with your backend endpoint for token verification
+          const { isAdmin } = response.data; // Assuming your backend returns isAdmin field
+          setIsAuthenticated(true);
+          console.log("User authenticated");
+          console.log(isAuthenticated);
+        } catch (error) {
+          console.error('Error verifying token:', error);
+          setIsAuthenticated(false);
+        }
+      }
+    };
+
+    checkAuthentication();
+  }, []); // Empty dependency array ensures this runs only once on component mount
+
+
+// Mock authentication function
+const login = (credentials) => {
+  if (credentials === 123) {
+  setIsAuthenticated(true);
+  console.log("User authenticated");
+  console.log(isAuthenticated);
+  }
   };
+
 
   // Toggle sidebar function
   const toggleSidebar = () => {
@@ -49,7 +73,7 @@ function App() {
                 isAuthenticated ? (
                   <Navigate to="/" />
                 ) : (
-                  <Login onLogin={login} />
+                  <Login onLogin={login}/>
                 )
               }
             />
@@ -134,7 +158,7 @@ function App() {
               }
             />
             <Route
-              path="/course-outcome"
+              path=":subname/course-outcome/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <CourseOutcome />
@@ -144,7 +168,7 @@ function App() {
               }
             />
             <Route
-              path="/course-objective/:subjectdataid"
+              path=":subname/course-objective/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <CourseObjectiveTable />
