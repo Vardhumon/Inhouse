@@ -37,7 +37,7 @@ const createSubject = async (subject_code, subject_name) => {
             co_po_pso_attain: []
         });
         await subjectData.save();
-
+        const subject_data_id = subjectData._id;
         await CourseOutcome.updateOne({ subject_id: subject._id }, { subject_name: subject.subject_name , subject_data_id: subjectData._id})
         await CourseObjective.updateOne({ subject_id: subject._id }, { subject_name: subject.subject_name , subject_data_id: subjectData._id})
         await PsoModel.updateOne({ subject_id: subject._id }, { subject_data_id: subjectData._id})
@@ -48,9 +48,9 @@ const createSubject = async (subject_code, subject_name) => {
         subject.subject_data = subjectData._id
 
         await subject.save()
+        const SubCodeAndDataId = {subject_code,subject_name,subject_data_id};
 
-
-        return { subject, subjectData, subject_names }; // Return both subject and subjectData
+        return { subject, subjectData, subject_names,SubCodeAndDataId }; // Return both subject and subjectData
     } catch (error) {
         throw new Error(error.message); // Throw error to handle it outside this function
     }

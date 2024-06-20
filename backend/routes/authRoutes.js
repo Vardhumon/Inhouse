@@ -2,7 +2,7 @@
 
 import express from 'express';
 import cors from 'cors';
-import { test, registerUser, loginUser, addTeacher } from "../Controllers/authControllers.js";
+import { test, loginUser, addTeacher, findTeacherSubs } from "../Controllers/authControllers.js";
 import { FindSubjectData, createBatch, createBatchStudents, findMatchingSubjectsForTeacher, getBatchStudentData } from '../Controllers/batchController.js';
 import { CreateStudentDetail, getstudentdetailsubejectwise } from "../Controllers/studentDetailController.js"
 import { addSubjects } from '../Controllers/semSubjectController.js';
@@ -21,7 +21,6 @@ router.use(
 );
 
 router.get('/', test);
-router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/batch', createBatch)
 router.post('/addSubjects', addSubjects)
@@ -40,4 +39,5 @@ router.post('/marking/:subject_data_id',updateMarkingModel)
 router.get('/getmarking', getMarkingModel)
 router.get('/courseobjective', getCourseObjectives)
 router.get('/courseoutcomes',getCourseOutcome)
+router.get('/findsubs',findTeacherSubs)
 export default router;

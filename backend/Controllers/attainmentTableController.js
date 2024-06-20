@@ -2,7 +2,7 @@ import { AttainmentTable } from "../models/attainTable.js";
 import { CourseArticulationModel } from "../models/courseArticulation.js";
 import { DirectPOAttainment } from "../models/directAttainPo.js";
 
-const createAttainmentTable = async (req, res) => {
+const createOrUpdateAttainmentTable = async (req, res) => {
     try {
         const { subject_data_id } = req.params;
         const FurtherData = req.body;
@@ -45,23 +45,6 @@ const createAttainmentTable = async (req, res) => {
         const avgPo = calculateAverage(Table1Data.map(row => row.po), poColumnCount);
         const avgPso = calculateAverage(Table1Data.map(row => row.pso), psoColumnCount);
 
-        const result = {
-            data: Table1Data,
-            averages: {
-                po: avgPo,
-                pso: avgPso
-            }
-        };
-        console.log(result);
-
-        const attainmentTableUE = new AttainmentTable({
-            subject_data_id: subject_data_id,
-            TableName: "UE",
-            data: Table1Data,
-            average: [avgPo, avgPso]
-        });
-        const finalAttainmentTableUE =await attainmentTableUE.save();
-
         const COPercentages = {
             0: CO1["percAttainmentlevelCO1"],
             1: CO2["percAttainmentlevelCO2"],
@@ -81,35 +64,77 @@ const createAttainmentTable = async (req, res) => {
         const avgPoTable2 = calculateAverage(Table2Data.map(row => row.po), poColumnCount);
         const avgPsoTable2 = calculateAverage(Table2Data.map(row => row.pso), psoColumnCount);
 
-        const resultTable2 = {
-            data: Table2Data,
-            averages: {
-                po: avgPoTable2,
-                pso: avgPsoTable2
-            }
-        };
-        const attainmentTableCO = new AttainmentTable({subject_data_id:subject_data_id, TableName:"CO",data:Table2Data, average:[avgPoTable2,avgPsoTable2]})
-        const finalAttainmentTableCO = await attainmentTableCO.save();
-
-        const InternalExam = [...avgPoTable2,...avgPsoTable2];
-        const UniversityExam = [...avgPo,...avgPso];
+        const InternalExam = [...avgPoTable2, ...avgPsoTable2];
+        const UniversityExam = [...avgPo, ...avgPso];
         const percInternalExam = InternalExam.map((val) => {
-            return parseFloat((val*0.2).toFixed(1))
-        })
+            return parseFloat((val * 0.2).toFixed(1));
+        });
         const percUniversityExam = UniversityExam.map((val) => {
-            return parseFloat((val*0.8).toFixed(1))
-        })
-        const DirectPOAttainmentValues = percInternalExam.map((val,index) => {
-            return parseFloat((val+percUniversityExam[index]).toFixed(1))
-        })
-        const DirectPO = new DirectPOAttainment({subject_data_id:subject_data_id,InternalExam:InternalExam,
-            UniversityExam:UniversityExam, percInternalExam:percInternalExam, percUniversityExam:percUniversityExam,DirectPO:DirectPOAttainmentValues
-        })
-        const FinalDirectPo = await DirectPO.save();
-        res.json({ finalAttainmentTableUE, finalAttainmentTableCO, FinalDirectPo});
+            return parseFloat((val * 0.8).toFixed(1));
+        });
+        const DirectPOAttainmentValues = percInternalExam.map((val, index) => {
+            return parseFloat((val + percUniversityExam[index]).toFixed(1));
+        });
+
+        const updateFieldsUE = {
+            TableName: "UE",
+            data: Table1Data,
+            average: [avgPo, avgPso]
+        };
+
+        const updatedAttainmentTableUE = await AttainmentTable.findOneAndUpdate(
+            { subject_data_id: subject_data_id, TableName: "UE" },
+            updateFieldsUE,
+            { new: true, upsert: true }
+        );
+
+        const updateFieldsCO = {
+            TableName: "CO",
+            data: Table2Data,
+            average: [avgPoTable2, avgPsoTable2]
+        };
+
+        const updatedAttainmentTableCO = await AttainmentTable.findOneAndUpdate(
+            { subject_data_id: subject_data_id, TableName: "CO" },
+            updateFieldsCO,
+            { new: true, upsert: true }
+        );
+
+        const updatedDirectPO = await DirectPOAttainment.findOneAndUpdate(
+            { subject_data_id: subject_data_id },
+            {
+                InternalExam: InternalExam,
+                UniversityExam: UniversityExam,
+                percInternalExam: percInternalExam,
+                percUniversityExam: percUniversityExam,
+                DirectPO: DirectPOAttainmentValues
+            },
+            { new: true, upsert: true }
+        );
+
+        res.json({ updatedAttainmentTableUE, updatedAttainmentTableCO, updatedDirectPO });
     } catch (error) {
         res.status(500).send(error.message);
     }
 };
 
-export { createAttainmentTable };
+
+const getAttainmentTable = async (req, res) => {
+    try {
+        const { subject_data_id } = req.params;
+
+        const ueAttainmentTable = await AttainmentTable.findOne({ subject_data_id, TableName: "UE" });
+        const coAttainmentTable = await AttainmentTable.findOne({ subject_data_id, TableName: "CO" });
+
+        const directPOAttainment = await DirectPOAttainment.findOne({ subject_data_id });
+
+        if (!ueAttainmentTable || !coAttainmentTable || !directPOAttainment) {
+            return res.status(404).send("Attainment data not found");
+        }
+
+        res.json({ ueAttainmentTable, coAttainmentTable, directPOAttainment });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+export { createOrUpdateAttainmentTable,getAttainmentTable };

@@ -14,21 +14,19 @@ const createBatch = async (req, res) => {
         const { batchyear, subjects } = req.body;
         let subjectIds = [];
         const subjects_names = [];
+        const SubCodeAndDataIds = [];
         for (let subjectData of subjects) {
             const { subject_code, subject_name } = subjectData;
-
-            // await the result of createSubject function
-            const { subject } = await createSubject(subject_code, subject_name); // Extract subject from the result
+            const { subject,SubCodeAndDataId } = await createSubject(subject_code, subject_name); // Extract subject from the result
             subjectIds.push(subject._id);
+            SubCodeAndDataIds.push(SubCodeAndDataId);
         }
         for (let i = 0; i < subjects.length; i++) {
             subjects_names.push(subjects[i].subject_name)
         }
-        // Create the batch with the subject IDs
-        const batch = new Batch({ batchyear, subjects: subjectIds, subject_names: subjects_names });
+        const batch = new Batch({ batchyear, subjects: subjectIds, subject_names: subjects_names ,subCodeAndDataIds:SubCodeAndDataIds});
         await batch.save();
 
-        // Update the batch_id field in each subject
         await Subject.updateMany({ _id: { $in: subjectIds } }, { $set: { batch_id: batch._id } });
 
         res.status(201).json(batch);

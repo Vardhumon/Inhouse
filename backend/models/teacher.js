@@ -17,7 +17,11 @@ const teacherSchema = new Schema({
         type: String,
         required: true
     },
-    subject: {
+    isAdmin:{
+        type:Boolean,
+        default:false   
+    },
+    subjects: {
         type: Array,
         required: true
     }
