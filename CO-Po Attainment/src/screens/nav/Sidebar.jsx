@@ -18,7 +18,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     zIndex: 1000,
     padding: '20px',
     borderRight: '2px solid #ccc',
-    borderRadius: '0 10px 10px 0'
+    // borderRadius: '0 10px 10px 0'
   };
 
   const handleLinkClick = () => {
@@ -47,7 +47,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const dropdownStyle = {
     maxHeight: isDropdownOpen ? '300px' : '0',
     overflow: 'hidden',
-    transition: 'max-height 0.3s ease'
+    transition: 'max-height 0.5s ease'
   };
 
   return (
