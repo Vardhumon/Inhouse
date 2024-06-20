@@ -24,7 +24,7 @@ function CourseOutcome() {
                     outcome: outcome.outcome[index]
                 }));
                 setData(formattedData);
-                setEditedData([...formattedData]); // Initialize editedData with fetched data
+                setEditedData([...formattedData]); 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -33,6 +33,7 @@ function CourseOutcome() {
         fetchDataAsync();
     }, [subname, subjectdataid]);
 
+    const [editMode, setEditMode] = useState(false); 
     const [editIndex, setEditIndex] = useState(null);
     const [editedData, setEditedData] = useState([]);
 
@@ -40,19 +41,30 @@ function CourseOutcome() {
         setEditedData([...data]);
     }, [data]);
 
+    const handleEditAll = () => {
+        if (!editMode) {
+            // Enable edit mode
+            setEditIndex(null); 
+            setEditMode(true);
+        } else {
+            // Save changes
+            setEditMode(false);
+            setData([...editedData]); 
+        }
+    };
+
     const handleEdit = (index) => {
-        setEditIndex(index);
+        if (editMode) {
+            setEditIndex(index);
+        }
     };
 
     const handleInputChange = (event, index, field) => {
-        const newData = [...editedData];
-        newData[index][field] = event.target.value;
-        setEditedData(newData);
-    };
-
-    const handleSave = (index) => {
-        setEditIndex(null);
-        setData([...editedData]); // Update original data with edited data
+        if (editMode) {
+            const newData = [...editedData];
+            newData[index][field] = event.target.value;
+            setEditedData(newData);
+        }
     };
 
     const submitData = async () => {
@@ -79,6 +91,10 @@ function CourseOutcome() {
         navigate(`/${subname}/course-objective/${subjectdataid}`);
     };
 
+    const navigateToPSOTable = () => {
+        navigate(`/${subname}/pso-table/${subjectdataid}`);
+    };
+
     return (
         <div className="container py-4 w-100 h-100 fs-4 my-4">
             <table className="table table-bordered">
@@ -92,7 +108,7 @@ function CourseOutcome() {
                     {data.map((item, index) => (
                         <tr key={index}>
                             <td className="align-middle text-center fs-5">
-                                {editIndex === index ? (
+                                {editIndex === index || editMode ? (
                                     <input
                                         type="text"
                                         className="form-control d-inline w-50"
@@ -102,15 +118,9 @@ function CourseOutcome() {
                                 ) : (
                                     <span className='fs-5'>{item.co}</span>
                                 )}
-                                <button
-                                    className={`btn btn-sm ${editIndex === index ? 'btn-success' : 'btn-light border border-3'} ms-2`}
-                                    onClick={() => editIndex === index ? handleSave(index) : handleEdit(index)}
-                                >
-                                    {editIndex === index ? 'Save' : 'Edit'}
-                                </button>
                             </td>
                             <td className="align-middle">
-                                {editIndex === index ? (
+                                {editIndex === index || editMode ? (
                                     <input
                                         type="text"
                                         className="form-control fs-5"
@@ -126,8 +136,14 @@ function CourseOutcome() {
                 </tbody>
             </table>
             <button className='btn btn-primary ms-5' onClick={submitData}>Submit</button>
-            <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToCourseObjectives}>
-                Back to Course Objectives
+            <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToPSOTable}>
+                Go to PSO Table
+            </button>
+            <button className='btn btn-warning position-fixed bottom-0 start-0 m-4' onClick={handleEditAll}>
+                {editMode ? 'Save All Changes' : 'Edit All'}
+            </button>
+            <button className='btn btn-info position-fixed bottom-0 end-5 m-4' onClick={navigateToCourseObjectives}>
+            Back to Course Objectives
             </button>
         </div>
     );

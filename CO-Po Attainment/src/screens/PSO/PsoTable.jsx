@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PsoRow from "./PsoRow";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const PsoTable = () => {
   const [data, setData] = useState([]);
   const [showPercentages, setShowPercentages] = useState(false);
   const [subdata, setSubData] = useState([]);
-
+  const {subjectdataid,subname} = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+          const response = await axios.get(`http://localhost:8000/CoPoPsoTable/${subjectdataid}`);
+          console.log(response.data);
+          setData(response.data.data); 
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+    fetchData()
+  }, [])
+  
   const addRow = () => {
     const newCo = `CO${data.length + 1}`;
     const newRow = {

@@ -148,7 +148,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path="/pso-table"
+              path=":subname/pso-table/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <PsoTable />
