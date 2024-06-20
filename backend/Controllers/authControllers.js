@@ -42,8 +42,8 @@ const loginUser = async (req, res) => {
 
         const token = setUser(teacher);
 
-        res.cookie("token", token, { httpOnly: true, secure: true });
-        res.cookie("subjects", teacher.subjects[0], { httpOnly: true, secure: true });
+        res.cookie("token", token, { httpOnly: false, secure: false });
+        res.cookie("email", teacher.email, { httpOnly: false, secure: false });
 
         const responsePayload = {
             message: "User Logged In Successfully!",
@@ -122,7 +122,8 @@ const addTeacher = async (req, res) => {
 
 const findTeacherSubs = async (req, res) => {
     try {
-        const { batchyear, email } = req.body;
+        const { batchyear, email } = req.query;
+        console.log(batchyear);
         const BatchData = await Batch.find({ batchyear: batchyear });
 
         if (BatchData.length === 0) {
