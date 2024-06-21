@@ -42,6 +42,8 @@ router.get('/course-objective/:subject_data_id', getCourseObjectives)
 router.get('/course-outcome/:subject_data_id',getCourseOutcome)
 router.get('/findsubs',authenticateTokenSub,findTeacherSubs)
 router.get('/CoPoPsoTable/:subject_data_id',getCoPO)
+router.post('/CoPoPsoTable/:subject_data_id',updateCoPo)
+
 
 
 

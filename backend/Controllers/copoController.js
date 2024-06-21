@@ -146,27 +146,27 @@ const updateCoPo = async(req,res) =>{
 
             const updatedPo = po.map((value, index) => {
                 switch (index) {
-                    case 0: return ((value / 5) * 100).toFixed(2);
-                    case 1: return ((value / 14) * 100).toFixed(2);
-                    case 2: return ((value / 14) * 100).toFixed(2);
-                    case 3: return ((value / 8) * 100).toFixed(2);
-                    case 4: return ((value / 6) * 100).toFixed(2);
-                    case 5: return ((value / 2) * 100).toFixed(2);
-                    case 6: return ((value / 4) * 100).toFixed(2);
-                    case 7: return ((value / 3) * 100).toFixed(2);
-                    case 8: return ((value / 7) * 100).toFixed(2);
-                    case 9: return ((value / 7) * 100).toFixed(2);
-                    case 10: return ((value / 5) * 100).toFixed(2);
-                    case 11: return ((value / 6) * 100).toFixed(2);
+                    case 0: return ((value / 5) * 100).toFixed(1);
+                    case 1: return ((value / 14) * 100).toFixed(1);
+                    case 2: return ((value / 14) * 100).toFixed(1);
+                    case 3: return ((value / 8) * 100).toFixed(1);
+                    case 4: return ((value / 6) * 100).toFixed(1);
+                    case 5: return ((value / 2) * 100).toFixed(1);
+                    case 6: return ((value / 4) * 100).toFixed(1);
+                    case 7: return ((value / 3) * 100).toFixed(1);
+                    case 8: return ((value / 7) * 100).toFixed(1);
+                    case 9: return ((value / 7) * 100).toFixed(1);
+                    case 10: return ((value / 5) * 100).toFixed(1);
+                    case 11: return ((value / 6) * 100).toFixed(1);
                     default: return 0;
                 }
             });
 
             const updatedPso = pso.map((value, index) => {
                 switch (index) {
-                    case 0: return ((value / 3) * 100);
-                    case 1: return ((value / 2) * 100);
-                    case 2: return ((value / 2) * 100);
+                    case 0: return ((value / 3) * 100).toFixed(1);
+                    case 1: return ((value / 2) * 100).toFixed(1);
+                    case 2: return ((value / 2) * 100).toFixed(1);
                     default: return 0;
                 }
             })
@@ -227,12 +227,14 @@ const getCoPO = async(req,res) => {
 
         const CoPo = await PsoModel.find({subject_data_id: subject_data_id});
         const CoPoPerc = await PercentageModel.find({subject_data_id: subject_data_id});
+        const CoPoArt = await CourseArticulationModel.find({subject_data_id:subject_data_id});
         console.log(CoPo);
         const {data} = CoPo[0];
         const data2 = CoPoPerc[0]["data"]
+        const data3 = CoPoArt[0]['data']
         console.log(data, data2);
         
-        return res.status(200).json({data, data2})
+        return res.status(200).json({data, data2,data3})
     } catch (error) {
         return res.status(400).json("Error Fetching CoPo Data")
     }

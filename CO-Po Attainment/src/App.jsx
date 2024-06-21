@@ -60,7 +60,7 @@ const login = (credentials) => {
 
   return (
     <Router>
-      <div className='vh-100 vw-100'>
+      <div className='vh-100 vw-100 overflow-hidden'>
         <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
