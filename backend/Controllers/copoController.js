@@ -136,9 +136,9 @@ const updateCoPo = async(req,res) =>{
     try {
         const {data} = req.body;
         const {subject_data_id} = req.params;
-        console.log(subject_data_id);
+        // console.log(subject_data_id);
         const CoPo = await PsoModel.updateOne({ subject_data_id:subject_data_id }, { $set: { data: data } })
-        console.log(CoPo);
+        // console.log(CoPo);
         const data2 =[];
         const data3 = [];
         data.forEach((item) => {
@@ -223,16 +223,16 @@ const updateCoPo = async(req,res) =>{
 const getCoPO = async(req,res) => {
     try {
         const {subject_data_id} =req.params;
-        console.log(subject_data_id);
+        // console.log(subject_data_id);
 
         const CoPo = await PsoModel.find({subject_data_id: subject_data_id});
         const CoPoPerc = await PercentageModel.find({subject_data_id: subject_data_id});
         const CoPoArt = await CourseArticulationModel.find({subject_data_id:subject_data_id});
-        console.log(CoPo);
+        // console.log(CoPo);
         const {data} = CoPo[0];
         const data2 = CoPoPerc[0]["data"]
         const data3 = CoPoArt[0]['data']
-        console.log(data, data2);
+        // console.log(data, data2);
         
         return res.status(200).json({data, data2,data3})
     } catch (error) {

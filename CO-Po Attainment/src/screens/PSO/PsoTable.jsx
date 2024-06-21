@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PsoRow from "./PsoRow";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import PercentageTable from "./PercTable";
 import CoruseArticulationTable from "./CourseArtTable";
@@ -12,8 +12,9 @@ const PsoTable = () => {
   const [artdata, setArtData] = useState([]);
 
   const [showPercentages, setShowPercentages] = useState(false);
-  const { subjectdataid } = useParams();
+  const { subjectdataid,subname } = useParams();
   const [alt, setAlt] = useState(false);
+  const navigate =useNavigate();
 
   const fetchData = async () => {
     try {
@@ -69,6 +70,10 @@ const PsoTable = () => {
     setData(updatedData);
   };
 
+  const navigateToStudentDetails = () =>{
+    navigate(`/${subname}/student-detail/${subjectdataid}`)
+  }
+
   return (
     <div className="container-fluid vh-100 vw-100 custom-table overflow-auto pt-3" style={{ margin: "0px", padding: "0px" }}>
       <div className="container-fluid h-80 vw-75 custom-table overflow-auto">
@@ -120,6 +125,9 @@ const PsoTable = () => {
       </div>
       <PercentageTable key={alt} show={showPercentages} data={percdata} />
       <CoruseArticulationTable show={showPercentages} data={artdata}/>
+      <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToStudentDetails}>
+                Go to Student Details
+      </button>
     </div>
   );
 };

@@ -11,6 +11,7 @@ import { getCourseObjectives, updateCourseObjective } from '../Controllers/cours
 import { getCourseOutcome, updateCourseOutcome } from '../Controllers/courseOutcomeController.js';
 import { getMarkingModel, updateMarkingModel } from '../Controllers/markingController.js';
 import { authenticateToken, authenticateTokenSub } from '../Controllers/authmiddleware.js';
+import { createOrUpdateAttainmentTable } from '../Controllers/attainmentTableController.js';
 
 const router = express.Router();
 
@@ -26,12 +27,12 @@ router.post('/login', loginUser);
 router.post('/batch', createBatch)
 router.post('/addSubjects', addSubjects)
 router.post('/addTeacher', addTeacher)
-router.post('/addstudent', CreateStudentDetail)
+router.post('/addstudent/:subject_data_id', CreateStudentDetail)
 router.get('/getbatchsubjects', findMatchingSubjectsForTeacher)
 router.post('/batchstudentdata',createBatchStudents)
 router.get('/getbatchstudentdata',getBatchStudentData)
 router.get('/findsubjectdata', FindSubjectData)
-router.get('/get', getstudentdetailsubejectwise)
+router.get('/get/:subject_data_id', getstudentdetailsubejectwise)
 router.post('/copo/:subject_data_id', updateCoPo)
 router.get('/copo/:subject_data_id', getCoPO);
 router.post('/courseobj/:subject_data_id', updateCourseObjective)
@@ -43,6 +44,7 @@ router.get('/course-outcome/:subject_data_id',getCourseOutcome)
 router.get('/findsubs',authenticateTokenSub,findTeacherSubs)
 router.get('/CoPoPsoTable/:subject_data_id',getCoPO)
 router.post('/CoPoPsoTable/:subject_data_id',updateCoPo)
+router.post('/attainment-table/:subject_data_id',createOrUpdateAttainmentTable);
 
 
 

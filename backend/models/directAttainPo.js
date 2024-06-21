@@ -10,21 +10,46 @@ const DirectPoSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref:"Subject_Data"
     },
-    InternalExam: {
-        type:Array
-    },
-    UniversityExam:{
-        type:Array
-    },
-    percInternalExam: {
-        type:Array
-    },
-    percUniversityExam:{
-        type:Array
-    },
-    DirectPO:{
-        type:Array
-    }
+    InternalExam: [{
+        po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }
+    }],
+    UniversityExam:[{
+        po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }
+    }],
+    percInternalExam:[{
+        po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }
+    }],
+    percUniversityExam:[{
+        po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }
+    }],
+    DirectPO:[{
+        po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }
+    }]
 });
 
 const DirectPOAttainment = mongoose.model("DirectPoAttainment",DirectPoSchema);

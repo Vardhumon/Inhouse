@@ -78,7 +78,7 @@ function StudentData() {
     };
 
     return (
-        <div className='w-100 vh-100 mt-5 fs-5'>
+        <div className='w-100 vh-100 mt-5 fs-5 container-fluid'>
             <div>
                 <div>Select Batch Year:</div>
                 <select onChange={(e) => setBatchYear(e.target.value)}>

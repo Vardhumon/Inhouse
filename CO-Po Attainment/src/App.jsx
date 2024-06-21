@@ -60,7 +60,7 @@ const login = (credentials) => {
 
   return (
     <Router>
-      <div className='vh-100 vw-100 overflow-hidden'>
+      <div className='vh-100 vw-100'>
         <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
@@ -98,10 +98,10 @@ const login = (credentials) => {
               }
             />
             <Route
-              path="/student-detail"
+              path=":subname/student-detail/:subjectdataid"
               element={
                 isAuthenticated ? (
-                  <StudentDetail />
+                  <StudentDetailTemp />
                 ) : (
                   <Navigate to="/login" />
                 )

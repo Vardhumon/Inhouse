@@ -8,8 +8,8 @@ const CreateStudentDetail = async (req, res) => {
     try {
         const students = req.body;
 
-        // Assuming SubjectDataId is provided in the request or is a fixed value.
-        const SubjectDataId = "666153f3928cc1f6066508ef";
+        // Assuming subject_data_id is provided in the request or is a fixed value.
+        const {subject_data_id} = req.params;
         const temparr = [];
 
         const createdOrUpdatedStudents = await Promise.all(students.map(async student => {
@@ -52,7 +52,7 @@ const CreateStudentDetail = async (req, res) => {
         }));
 
         // Update Subject_Data with the list of student details
-        await Subject_Data.updateOne({ _id: SubjectDataId }, { $set: { student_details: temparr } });
+        await Subject_Data.updateOne({ _id: subject_data_id }, { $set: { student_details: temparr } });
 
         return res.status(200).json({ message: "Students created/updated successfully", students: createdOrUpdatedStudents });
     } catch (error) {
@@ -64,10 +64,10 @@ const CreateStudentDetail = async (req, res) => {
 
 
 const getstudentdetailsubejectwise = async (req, res) => {
-    const SubjectDataId = "666153f3928cc1f6066508ef";
+    const {subject_data_id} = req.params;
     const temp = [];
     try {
-        const subject_data = await Subject_Data.findById(SubjectDataId.toString());
+        const subject_data = await Subject_Data.findById(subject_data_id.toString());
         // console.log(subject_data);
         const { student_details } = subject_data;
         // console.log(student_details);
@@ -84,7 +84,7 @@ const getstudentdetailsubejectwise = async (req, res) => {
         temp.push(...studentDetails);
         
         // console.log(temp);
-        return res.status(200).json(temp);
+        return res.status(200).json([temp]);
     } catch (error) {
         return res.status(400).json({ error: "Error fetching students from backend" });
     }

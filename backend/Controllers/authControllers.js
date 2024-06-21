@@ -123,7 +123,7 @@ const addTeacher = async (req, res) => {
 const findTeacherSubs = async (req, res) => {
     try {
         const { batchyear, email } = req.query;
-        console.log(batchyear);
+        // console.log(batchyear);
         const BatchData = await Batch.find({ batchyear: batchyear });
 
         if (BatchData.length === 0) {
@@ -152,7 +152,7 @@ const findTeacherSubs = async (req, res) => {
             }
         });
 
-        console.log(updatedSubCodeAndDataIds);
+        // console.log(updatedSubCodeAndDataIds);
         return res.status(200).json(updatedSubCodeAndDataIds);
     } catch (error) {
         return res.status(400).json({ message: error.message });

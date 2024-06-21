@@ -15,7 +15,7 @@ const updateCourseObjective = async (req,res) => {
 
         //enter subject_data_id of the Objective you want to update
         const {subject_data_id} = req.params;
-        console.log(subject_data_id);
+        // console.log(subject_data_id);
 
         // const {subject_data_id} = req.params;
         const {objectives} = req.body;

@@ -7,21 +7,23 @@ const createOrUpdateAttainmentTable = async (req, res) => {
         const { subject_data_id } = req.params;
         const FurtherData = req.body;
         const { UE, CO1, CO2, CO3, CO4, CO5, CO6 } = FurtherData;
-
+        // console.log("hello hello",UE);
         const articulationTable = await CourseArticulationModel.findOne({ subject_data_id });
-
+        // console.log("hello hello",articulationTable.data);
         if (!articulationTable || !articulationTable.data) {
             return res.status(404).send("Articulation table data not found");
         }
 
         const { data } = articulationTable;
+        // console.log("hello hello",data);
 
         const Table1Data = data.map((val) => {
             const { po, pso } = val;
-            const poCalculated = po.map((item) => item === '-' ? '-' : item / UE["percAttainmentlevelUE"]);
-            const psoCalculated = pso.map((item) => item === '-' ? '-' : item / UE["percAttainmentlevelUE"]);
+            const poCalculated = po.map((item) => item === '-' ? '-' : (item*UE["percAttainmentlevelUE"])/100);
+            const psoCalculated = pso.map((item) => item === '-' ? '-' : (item*UE["percAttainmentlevelUE"])/100);
             return { po: poCalculated, pso: psoCalculated };
         });
+        // console.log(Table1Data);
 
         const poColumnCount = data[0].po.length;
         const psoColumnCount = data[0].pso.length;
@@ -39,12 +41,13 @@ const createOrUpdateAttainmentTable = async (req, res) => {
                 });
             });
 
-            return sums.map((sum, index) => counts[index] === 0 ? '-' : sum / counts[index]);
+            return sums.map((sum, index) => counts[index] === 0 ? '-' : parseFloat((sum / counts[index]).toFixed(2)));
         };
 
         const avgPo = calculateAverage(Table1Data.map(row => row.po), poColumnCount);
+        // console.log(avgPo);
         const avgPso = calculateAverage(Table1Data.map(row => row.pso), psoColumnCount);
-
+        // console.log(avgPso);
         const COPercentages = {
             0: CO1["percAttainmentlevelCO1"],
             1: CO2["percAttainmentlevelCO2"],
@@ -56,24 +59,55 @@ const createOrUpdateAttainmentTable = async (req, res) => {
 
         const Table2Data = data.map((val, index) => {
             const { po, pso } = val;
-            const poCalculated = po.map((item) => item === '-' ? '-' : item / COPercentages[index]);
-            const psoCalculated = pso.map((item) => item === '-' ? '-' : item / COPercentages[index]);
+            const poCalculated = po.map((item) => item === '-' ? '-' : parseFloat(((item*COPercentages[index])/100).toFixed(2)));
+            const psoCalculated = pso.map((item) => item === '-' ? '-' :parseFloat(((item*COPercentages[index])/100).toFixed(2)));
             return { po: poCalculated, pso: psoCalculated };
         });
-
+        // console.log(Table2Data);
         const avgPoTable2 = calculateAverage(Table2Data.map(row => row.po), poColumnCount);
         const avgPsoTable2 = calculateAverage(Table2Data.map(row => row.pso), psoColumnCount);
-
-        const InternalExam = [...avgPoTable2, ...avgPsoTable2];
-        const UniversityExam = [...avgPo, ...avgPso];
+        // console.log("cat", avgPoTable2);
+        const InternalExam = [{po:avgPoTable2,pso:avgPsoTable2}];
+        // console.log("int",InternalExam);
+        const UniversityExam = [{po:avgPo,pso:avgPso}];
         const percInternalExam = InternalExam.map((val) => {
-            return parseFloat((val * 0.2).toFixed(1));
+            // console.log("value",val.po);
+            const finalvaluespo = val.po.map((po) =>{
+                return parseFloat((po * 0.2).toFixed(1))
+            })
+            // console.log("hello helloooo",finalvaluespo);
+            const finalvaluespso = val.pso.map((pso) =>{
+                return parseFloat((pso * 0.2).toFixed(1))
+            })
+            return {
+                po: finalvaluespo,
+                pso: finalvaluespso
+            };
         });
+        // console.log("percentage",percInternalExam);
         const percUniversityExam = UniversityExam.map((val) => {
-            return parseFloat((val * 0.8).toFixed(1));
+            const finalvaluespo = val.po.map((po) =>{
+                return parseFloat((po * 0.8).toFixed(1))
+            })
+            const finalvaluespso = val.pso.map((pso) =>{
+                return parseFloat((pso * 0.2).toFixed(1))
+            })
+            return {
+                po:finalvaluespo,
+                pso: finalvaluespso
+            };
         });
         const DirectPOAttainmentValues = percInternalExam.map((val, index) => {
-            return parseFloat((val + percUniversityExam[index]).toFixed(1));
+            const finalvaluespo = val.po.map((po,idx) =>{
+                return parseFloat((po+ percUniversityExam[0].po[idx]).toFixed(1))
+            })
+            const finalvaluespso = val.pso.map((pso,idx) =>{
+                return parseFloat((pso+ percUniversityExam[0].pso[idx]).toFixed(1))
+            })
+            return {
+                po:finalvaluespo,
+                pso: finalvaluespso
+            };
         });
 
         const updateFieldsUE = {
@@ -81,7 +115,7 @@ const createOrUpdateAttainmentTable = async (req, res) => {
             data: Table1Data,
             average: [avgPo, avgPso]
         };
-
+        // console.log("hello 123",Table1Data);
         const updatedAttainmentTableUE = await AttainmentTable.findOneAndUpdate(
             { subject_data_id: subject_data_id, TableName: "UE" },
             updateFieldsUE,

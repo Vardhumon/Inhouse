@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-const fetchStudentDetails = async () => {
-    const response = await fetch('http://localhost:8000/get'); // Replace with your API endpoint
+const fetchStudentDetails = async (subjectdataid) => {
+    const response = await fetch(`http://localhost:8000/get/${subjectdataid}`); // Replace with your API endpoint
     const backendData = await response.json();
-    return backendData;
+    return backendData[0];
 };
 
 const fetchBackendData = async () => {
@@ -68,12 +70,15 @@ function StudentDetailTemp() {
     const [totals, setTotals] = useState([]);
     const [columnTotal, setcolumnTotal] = useState([]);
     const [finalTotalData, setfinalTotalData] = useState({});
+    const [DataForAttainment,setDataForAttainment] = useState();
+    const {subjectdataid,subname} = useParams();
 
 
-    const fetchMarking = async () => {
+    const fetchMarking = async (subjectdataid) => {
         try {
             const response = await fetch('http://localhost:8000/getmarking');
             const Markingdata = await response.json();
+            console.log(Markingdata);
             const data = Markingdata[1][0]["data"];
             console.log(data);
             setmarking(data);
@@ -85,28 +90,35 @@ function StudentDetailTemp() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const backendData = await fetchStudentDetails();
+                const backendData = await fetchStudentDetails(subjectdataid);
                 const studentdata = await fetchBackendData();
                 setBackendStudents(backendData);
-                // console.log(backendData);
+                // console.log(backendData,"backend");
                 setStudentDetails(studentdata);
+                // console.log(studentdata,"student");
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-        fetchMarking();
+        // fetchMarking();
         
 
     }, []);
 
+    // useEffect(() =>{
+    //     setTimeout(console.log("hello 4",backendStudents),12000)
+    // },[])
+
     useEffect(() => {
         if (studentDetails.length) {
-            const formattedStudents = studentDetails.map((student, index) => {
-                const backendStudent = backendStudents.filter(backendstudent => student.roll_number === backendstudent.roll_number) || {};
-                const co_attain_UE = backendStudent[0].co_attain_UE || {};
-                const co_attain_IE_CW = backendStudent[0].co_attain_IE_CW || {};
+            const formattedStudents = studentDetails.map((student,index) => {
+                const backendStudent = backendStudents.filter(backendstudent => student.roll_number === backendstudent.roll_number);
+                console.log(backendStudent,"hel"); // Ensure we have a single backend student or an empty object
+
+                const co_attain_UE = backendStudent[0]?.co_attain_UE || {};
+                const co_attain_IE_CW = backendStudent[0]?.co_attain_IE_CW || {};
 
                 return {
                     name: student.name,
@@ -124,10 +136,9 @@ function StudentDetailTemp() {
                     CO6: [co_attain_IE_CW.CO6?.CW]
                 };
             });
-            // console.log("hello1 ",formattedStudents);
             setStudents(formattedStudents);
         }
-    }, [backendStudents, studentDetails]);
+    }, [studentDetails, backendStudents]);
 
     useEffect(() => {
         calculateAllTotals();
@@ -344,7 +355,7 @@ function StudentDetailTemp() {
         }
         }
         console.log(datafurther);
-        return datafurther;
+        setDataForAttainment(datafurther);
 
     }
 
@@ -369,30 +380,42 @@ function StudentDetailTemp() {
 
     const handleAllRowsSubmit = async (event) => {
         event.preventDefault();
-        const StudentDetails = students.map((student, index) => ({
-            ...student,
-            total: totals[index]?.total || 0,
-            co1: { UT1: student.CO1[0], CW: student.CO1[1], Total: totals[index]?.totalCO1 || 0 },
-            co2: { UT1: student.CO2[0], CW: student.CO2[1], Total: totals[index]?.totalCO2 || 0 },
-            co3: { UT2: student.CO3[0], CW: student.CO3[1], Total: totals[index]?.totalCO3 || 0 },
-            co4: { UT2: student.CO4[0], CW: student.CO4[1], Total: totals[index]?.totalCO4 || 0 },
-            co5: { CW: student.CO5[0], Total: totals[index]?.totalCO5 || 0 },
-            co6: { CW: student.CO6[0], Total: totals[index]?.totalCO6 || 0 }
-        }));
-        
-        console.log("All Row data:", StudentDetails);
+        try {
+            const StudentDetails = students.map((student, index) => ({
+                ...student,
+                total: totals[index]?.total || 0,
+                co1: { UT1: student.CO1[0], CW: student.CO1[1], Total: totals[index]?.totalCO1 || 0 },
+                co2: { UT1: student.CO2[0], CW: student.CO2[1], Total: totals[index]?.totalCO2 || 0 },
+                co3: { UT2: student.CO3[0], CW: student.CO3[1], Total: totals[index]?.totalCO3 || 0 },
+                co4: { UT2: student.CO4[0], CW: student.CO4[1], Total: totals[index]?.totalCO4 || 0 },
+                co5: { CW: student.CO5[0], Total: totals[index]?.totalCO5 || 0 },
+                co6: { CW: student.CO6[0], Total: totals[index]?.totalCO6 || 0 }
+            }));
+            
+            console.log("All Row data:", StudentDetails);
+    
+            const response =await axios.post(`http://localhost:8000/addstudent/${subjectdataid}`, StudentDetails, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
 
-        await axios.post('http://localhost:8000/addstudent', StudentDetails, {
-            headers: {
-                'Content-Type': 'application/json'
+            const attainmentResponse = await axios.post(`http://localhost:8000/attainment-table/${subjectdataid}`,DataForAttainment,{
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            console.log("hello",attainmentResponse);
+            if(response.status ===200){
+                toast.success("Student Details Updated Successfully")
             }
-        })
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log("Something is wrong", error);
-            })
+            if(attainmentResponse.status===200){
+                toast.success("Successfully Updated Attainment Data")
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error("Some error in updating student details")
+        }
     };
 
     return (

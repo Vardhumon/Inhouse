@@ -11,12 +11,14 @@ const attainTableSchema = new Schema({
       ref:"Subject_Data"
     },
     TableName: String,
-    po:{
-        type:Array
-    },
-    pso:{
-        type:Array
-    },
+    data:[
+        {po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }}
+    ],
     average:{
         type:Array
     }

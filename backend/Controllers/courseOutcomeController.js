@@ -28,9 +28,9 @@ const updateCourseOutcome = async (req,res) => {
 const getCourseOutcome = async(req,res) => {
     try {
         const {subject_data_id} = req.params;
-        console.log(subject_data_id);
+        // console.log(subject_data_id);
         const courseOutcome = await CourseOutcome.find({subject_data_id:subject_data_id});
-        console.log(courseOutcome[0]);
+        // console.log(courseOutcome[0]);
         const {co,outcome} = courseOutcome[0];
         return res.status(200).json({co,outcome}) 
     } catch (error) {
