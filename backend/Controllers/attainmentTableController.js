@@ -19,8 +19,8 @@ const createOrUpdateAttainmentTable = async (req, res) => {
 
         const Table1Data = data.map((val) => {
             const { po, pso } = val;
-            const poCalculated = po.map((item) => item === '-' ? '-' : (item*UE["percAttainmentlevelUE"])/100);
-            const psoCalculated = pso.map((item) => item === '-' ? '-' : (item*UE["percAttainmentlevelUE"])/100);
+            const poCalculated = po.map((item) => item === '-' ? '-' : parseFloat((((item*UE["percAttainmentlevelUE"])/100)).toFixed(1)));
+            const psoCalculated = pso.map((item) => item === '-' ? '-' : parseFloat((((item*UE["percAttainmentlevelUE"])/100)).toFixed(1)));
             return { po: poCalculated, pso: psoCalculated };
         });
         // console.log(Table1Data);
@@ -59,8 +59,8 @@ const createOrUpdateAttainmentTable = async (req, res) => {
 
         const Table2Data = data.map((val, index) => {
             const { po, pso } = val;
-            const poCalculated = po.map((item) => item === '-' ? '-' : parseFloat(((item*COPercentages[index])/100).toFixed(2)));
-            const psoCalculated = pso.map((item) => item === '-' ? '-' :parseFloat(((item*COPercentages[index])/100).toFixed(2)));
+            const poCalculated = po.map((item) => item === '-' ? '-' : parseFloat(((item*COPercentages[index])/100).toFixed(1)));
+            const psoCalculated = pso.map((item) => item === '-' ? '-' :parseFloat(((item*COPercentages[index])/100).toFixed(1)));
             return { po: poCalculated, pso: psoCalculated };
         });
         // console.log(Table2Data);

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import MiscTable from '../../miscTables/MiscTable';
 
 const fetchStudentDetails = async (subjectdataid) => {
     const response = await fetch(`http://localhost:8000/get/${subjectdataid}`); // Replace with your API endpoint
@@ -72,6 +73,8 @@ function StudentDetailTemp() {
     const [finalTotalData, setfinalTotalData] = useState({});
     const [DataForAttainment,setDataForAttainment] = useState();
     const {subjectdataid,subname} = useParams();
+    const [miscData,setMiscData] = useState();
+    const [showmisc,setShowMisc] = useState(false);
 
 
     const fetchMarking = async (subjectdataid) => {
@@ -405,12 +408,15 @@ function StudentDetailTemp() {
                     'Content-Type':'application/json'
                 }
             })
-            console.log("hello",attainmentResponse);
+            console.log("hello",attainmentResponse.data);
+
             if(response.status ===200){
                 toast.success("Student Details Updated Successfully")
             }
             if(attainmentResponse.status===200){
                 toast.success("Successfully Updated Attainment Data")
+                setMiscData(attainmentResponse.data)
+                setShowMisc(true);
             }
         } catch (error) {
             console.error(error)
@@ -527,6 +533,12 @@ function StudentDetailTemp() {
                 </table>
                 <button className="btn btn-primary" onClick={handleAllRowsSubmit}>Submit All Rows</button>
             </div>
+            {miscData && setShowMisc && miscData.updatedAttainmentTableUE ? (
+            <div>
+                <MiscTable show={setShowMisc} data={miscData["updatedAttainmentTableUE"]} />
+                <MiscTable show={setShowMisc} data={miscData["updatedAttainmentTableCO"]}/>
+            </div>
+             ) : null}
         </div>
     );
 }
