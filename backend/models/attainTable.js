@@ -19,9 +19,14 @@ const attainTableSchema = new Schema({
             type:Array
         }}
     ],
-    average:{
-        type:Array
-    }
+    average:[
+        {po:{
+            type:Array
+        },
+        pso:{
+            type:Array
+        }}
+    ],
 })
 
 const AttainmentTable = mongoose.model("AttainmentTable", attainTableSchema)

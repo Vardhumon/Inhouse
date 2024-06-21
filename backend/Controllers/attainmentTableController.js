@@ -113,7 +113,7 @@ const createOrUpdateAttainmentTable = async (req, res) => {
         const updateFieldsUE = {
             TableName: "UE",
             data: Table1Data,
-            average: [avgPo, avgPso]
+            average: [{po:avgPo, pso:avgPso}]
         };
         // console.log("hello 123",Table1Data);
         const updatedAttainmentTableUE = await AttainmentTable.findOneAndUpdate(
@@ -125,7 +125,7 @@ const createOrUpdateAttainmentTable = async (req, res) => {
         const updateFieldsCO = {
             TableName: "CO",
             data: Table2Data,
-            average: [avgPoTable2, avgPsoTable2]
+            average: [{po:avgPoTable2, pso:avgPsoTable2}]
         };
 
         const updatedAttainmentTableCO = await AttainmentTable.findOneAndUpdate(
