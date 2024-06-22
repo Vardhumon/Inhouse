@@ -10,15 +10,30 @@ const FinalCoPoPsoSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref:"Subject_Data"
     },
-    DirectPo80perc:{
-        type:Array
-    },
-    IndirectPo20perc:{
-        type:Array
-    },
-    COPOPSOAttainment:{
-        type:Array
-    }
+    DirectPo80perc:[{
+        po:{
+          type:Array
+        },
+        pso:{
+          type:Array
+        }
+      }],
+    IndirectPo20perc:[{
+        po:{
+          type:Array
+        },
+        pso:{
+          type:Array
+        }
+      }],
+    COPOPSOAttainment:[{
+        po:{
+          type:Array
+        },
+        pso:{
+          type:Array
+        }
+      }]
 })
 
 const FinalCoPoPso = mongoose.model("FinalCoPoPso",FinalCoPoPsoSchema)

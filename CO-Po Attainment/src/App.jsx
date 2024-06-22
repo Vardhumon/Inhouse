@@ -16,6 +16,9 @@ import StudentDetailTemp from './screens/StudentDetails/Temp';
 import PsoTable from './screens/PSO/PsoTable';
 import CourseOutcome from './screens/Course/CourseOutcome';
 import CourseObjectiveTable from './screens/Course/CourseObjective';
+import AttainmentTables from './screens/attainment/AttainmentTables';
+import DirectIndirect from './screens/directindirect/DirectIndirect';
+import EditableTable from './screens/directindirect/DirectIndirect';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -172,6 +175,26 @@ const login = (credentials) => {
               element={
                 isAuthenticated ? (
                   <CourseObjectiveTable />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path=":subname/attainment-tables/:subjectdataid"
+              element={
+                isAuthenticated ? (
+                  <AttainmentTables />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path=":subname/direct-indirect/:subjectdataid"
+              element={
+                isAuthenticated ? (
+                  <EditableTable />
                 ) : (
                   <Navigate to="/login" />
                 )

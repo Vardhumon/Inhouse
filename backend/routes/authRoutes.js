@@ -11,7 +11,8 @@ import { getCourseObjectives, updateCourseObjective } from '../Controllers/cours
 import { getCourseOutcome, updateCourseOutcome } from '../Controllers/courseOutcomeController.js';
 import { getMarkingModel, updateMarkingModel } from '../Controllers/markingController.js';
 import { authenticateToken, authenticateTokenSub } from '../Controllers/authmiddleware.js';
-import { createOrUpdateAttainmentTable } from '../Controllers/attainmentTableController.js';
+import { createOrUpdateAttainmentTable, getAttainmentTable } from '../Controllers/attainmentTableController.js';
+import { createIndirectPo, getFinalData } from '../Controllers/indirectPoController.js';
 
 const router = express.Router();
 
@@ -45,6 +46,9 @@ router.get('/findsubs',authenticateTokenSub,findTeacherSubs)
 router.get('/CoPoPsoTable/:subject_data_id',getCoPO)
 router.post('/CoPoPsoTable/:subject_data_id',updateCoPo)
 router.post('/attainment-table/:subject_data_id',createOrUpdateAttainmentTable);
+router.get('/attainment-tables/:subject_data_id',getAttainmentTable)
+router.post('/direct-indirect/:subject_data_id',createIndirectPo)
+router.get('/direct-indirect/:subject_data_id',getFinalData)
 
 
 

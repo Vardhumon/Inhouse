@@ -24,9 +24,14 @@ const IndirectPoSchema = new Schema({
           type:Array
         }
       }],
-    averages:{
+    averages:[{
+      po:{
         type:Array
-    }
+      },
+      pso:{
+        type:Array
+      }
+    }]
 })
 
 const IndirectPo = mongoose.model("IndirectPo", IndirectPoSchema)

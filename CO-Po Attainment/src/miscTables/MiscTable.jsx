@@ -1,13 +1,12 @@
 import React from "react";
 
-const MiscTable = ({ show, data }) => {
-  if (!show) return null;
+const MiscTable = ({ data }) => {
 
   return (
-    <div className=" custom-table overflow-auto mt-4" style={{ margin: "0px", padding: "0px" }}>
-      <div className="vw-75 custom-table overflow-auto">
-        <div className="container-fluid bg-light text-dark px-1 cusTable p-1 border border-3">
-          <table className="table table-bordered h-100" style={{ minHeight: "200px" }}>
+    <div className="overflow-auto mt-4" style={{ margin: "0px", padding: "0px" }}>
+      <div className="vw-75  overflow-auto">
+        <div className=" bg-light text-dark px-4 border border-3">
+          <table className="table table-bordered h-75" style={{ minHeight: "200px" }}>
             <thead>
               <tr>
                 <th colSpan={12} className="text-center">Program Outcomes</th>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import MiscTable from '../../miscTables/MiscTable';
 
@@ -75,6 +75,7 @@ function StudentDetailTemp() {
     const {subjectdataid,subname} = useParams();
     const [miscData,setMiscData] = useState();
     const [showmisc,setShowMisc] = useState(false);
+    const navigate = useNavigate();
 
 
     const fetchMarking = async (subjectdataid) => {
@@ -195,16 +196,18 @@ function StudentDetailTemp() {
                 });
 
                 setfinalTotalData(final);
+                DataForFurther();
+
             };
 
-            const timer = setTimeout(calculateFinalTotals, 5000);
+            const timer = setTimeout(calculateFinalTotals,100);
             return () => clearTimeout(timer);
         }
     }, [totals]);
 
-    useEffect(() => {
-        DataForFurther();
-    }, [finalTotalData]);
+    // useEffect(() => {
+    //     DataForFurther();
+    // }, [finalTotalData]);
 
     const DataForFurther = () => {
         const UEtotal = finalTotalData["finaltotal"];
@@ -358,6 +361,7 @@ function StudentDetailTemp() {
         }
         }
         console.log(datafurther);
+        toast.success("Data Ready To Be Sent")
         setDataForAttainment(datafurther);
 
     }
@@ -409,9 +413,11 @@ function StudentDetailTemp() {
                 }
             })
             console.log("hello",attainmentResponse.data);
+            console.log("hello222",DataForAttainment);
+
 
             if(response.status ===200){
-                toast.success("Student Details Updated Successfully")
+                toast.success("Student Details Updated Successfully",)
             }
             if(attainmentResponse.status===200){
                 toast.success("Successfully Updated Attainment Data")
@@ -423,6 +429,13 @@ function StudentDetailTemp() {
             toast.error("Some error in updating student details")
         }
     };
+
+    const navigateToAttainment =() =>{
+        navigate(`/${subname}/attainment-tables/${subjectdataid}`)
+    }
+    const navigateToCoPo =() =>{
+        navigate(`/${subname}/pso-table/${subjectdataid}`)
+    }
 
     return (
         <div className='mt-5 ms-4'>
@@ -531,14 +544,19 @@ function StudentDetailTemp() {
                         ))}
                     </tbody>
                 </table>
-                <button className="btn btn-primary" onClick={handleAllRowsSubmit}>Submit All Rows</button>
+                <div className='d-flex justify-content-start'>
+                <button className="btn btn-success  me-2" onClick={handleAllRowsSubmit}>Submit All Rows</button>
+            <button className='btn btn-secondary me-2 ' onClick={navigateToCoPo}>Go to Course Outcomes</button>
+            <button className='btn btn-primary me-4 ' onClick={navigateToAttainment}>Go to Attainment Tables</button>
+
+                </div>
             </div>
-            {miscData && setShowMisc && miscData.updatedAttainmentTableUE ? (
+            {/* {miscData && setShowMisc && miscData.updatedAttainmentTableUE ? (
             <div>
                 <MiscTable show={setShowMisc} data={miscData["updatedAttainmentTableUE"]} />
                 <MiscTable show={setShowMisc} data={miscData["updatedAttainmentTableCO"]}/>
             </div>
-             ) : null}
+             ) : null} */}
         </div>
     );
 }
