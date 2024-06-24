@@ -546,9 +546,10 @@ function StudentDetailTemp() {
                 </table>
                 <div className='d-flex justify-content-start'>
                 <button className="btn btn-success  me-2" onClick={handleAllRowsSubmit}>Submit All Rows</button>
-            <button className='btn btn-secondary me-2 ' onClick={navigateToCoPo}>Go to Course Outcomes</button>
-            <button className='btn btn-primary me-4 ' onClick={navigateToAttainment}>Go to Attainment Tables</button>
-
+                <div className="d-flex justify-content-between position-fixed bottom-0 end-0 m-4">
+                     <button className='btn btn-secondary me-2 ' onClick={navigateToCoPo}>Go to Course Outcomes</button>
+                     <button className='btn btn-primary me-4 ' onClick={navigateToAttainment}>Go to Attainment Tables</button>
+                </div>
                 </div>
             </div>
             {/* {miscData && setShowMisc && miscData.updatedAttainmentTableUE ? (

@@ -73,10 +73,13 @@ const PsoTable = () => {
   const navigateToStudentDetails = () =>{
     navigate(`/${subname}/student-detail/${subjectdataid}`)
   }
+  const navigateToCourseOutcome = () =>{
+    navigate(`/${subname}/course-outcome/${subjectdataid}`)
+  }
 
   return (
-    <div className="container-fluid vh-100 vw-100 custom-table overflow-auto pt-3" style={{ margin: "0px", padding: "0px" }}>
-      <div className="container-fluid h-80 vw-75 custom-table overflow-auto">
+    <div className="container-fluid vh-100 vw-100 custom-table overflow- pt-3" style={{ margin: "0px", padding: "0px" }}>
+      <div className="container-fluid h-80 vw-75 custom-table overflow-">
         <div className="container-fluid bg-light text-dark  cusTable p-2 border border-3 mb-5">
           <table className="table table-bordered">
             <thead>
@@ -125,9 +128,14 @@ const PsoTable = () => {
       </div>
       <PercentageTable key={alt} show={showPercentages} data={percdata} />
       <CoruseArticulationTable show={showPercentages} data={artdata}/>
-      <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToStudentDetails}>
+      <div className="d-flex justify-content-between position-fixed bottom-0 end-0 m-4">
+      <button className='btn btn-secondary me-2' onClick={navigateToCourseOutcome}>
+                Back to Course Outcome 
+      </button>
+      <button className='btn btn-primary' onClick={navigateToStudentDetails}>
                 Go to Student Details
       </button>
+      </div>
     </div>
   );
 };

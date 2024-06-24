@@ -6,8 +6,8 @@ const CoruseArticulationTable = ({ show, data }) => {
 //   console.log("PercentageTable data:", data); // Debugging log to check data
 
   return (
-    <div className="container-fluid vh-100 vw-75 custom-table overflow-auto" style={{ margin: "0px", padding: "0px" }}>
-    <div className="container-fluid vw-75 custom-table overflow-auto">
+    <div className="container-fluid h-75 vw-100 custom-table overflow-" style={{ margin: "0px", padding: "0px" }}>
+    <div className="container-fluid vw-75 custom-table overflow-">
       <div className="container-fluid bg-light text-dark px-1 cusTable p-1 border border-3">
       <table className="table table-bordered h-100" style={{minHeight:"200px"}}>
         <thead>

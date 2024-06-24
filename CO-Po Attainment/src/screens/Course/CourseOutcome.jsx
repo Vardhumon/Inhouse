@@ -96,12 +96,12 @@ function CourseOutcome() {
     };
 
     return (
-        <div className="container py-4 w-100 h-100 fs-4 my-4">
+        <div className="m-5 py-4 w-80 h-100 my-4 d-flex flex-column">
             <table className="table table-bordered">
-                <thead className="bg-success text-white text-center">
+                <thead className="bg-success text-white text-center table-primary">
                     <tr>
-                        <th scope="col-5" className="col-2">CO</th>
-                        <th scope="col-7" className="col-10">Course Outcomes (CO's)</th>
+                        <th scope="col-5" className="col-2 fs-4">CO</th>
+                        <th scope="col-7" className="col-10 align-middle fs-4">Course Outcomes (CO's)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -135,16 +135,18 @@ function CourseOutcome() {
                     ))}
                 </tbody>
             </table>
-            <button className='btn btn-primary ms-5' onClick={submitData}>Submit</button>
-            <button className='btn btn-secondary position-fixed bottom-0 end-0 m-4' onClick={navigateToPSOTable}>
-                Go to PSO Table
-            </button>
-            <button className='btn btn-warning position-fixed bottom-0 start-0 m-4' onClick={handleEditAll}>
-                {editMode ? 'Save All Changes' : 'Edit All'}
-            </button>
-            <button className='btn btn-info position-fixed bottom-0 end-5 m-4' onClick={navigateToCourseObjectives}>
+            <div className="d-flex justify-content-between position-fixed bottom-0 start-0 m-4">
+                <button className='btn btn-warning me-2' onClick={handleEditAll}>
+                    {editMode ? 'Save All Changes' : 'Edit All'}
+                </button>
+                <button className='btn btn-success' onClick={submitData}>Submit</button>
+            </div>
+           <div className='d-flex position-fixed bottom-0 end-0 m-4 justify-content-between'>
+           <button className='btn btn-secondary me-2' onClick={navigateToCourseObjectives}>
             Back to Course Objectives
             </button>
+            <button className='btn btn-primary' onClick={navigateToPSOTable}> Go to PSO Table</button>
+           </div>
         </div>
     );
 }

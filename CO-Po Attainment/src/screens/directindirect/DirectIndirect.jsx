@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const EditableTable = () => {
   const initialData = {
-    courseOutcome: "Values get from Course End Survey",
+    courseOutcome: " default Values get from Course End Survey",
     CO1: 0,
     CO2: 0,
     CO3: 0,
@@ -20,12 +20,13 @@ const EditableTable = () => {
   };
   const {subjectdataid,subname}=useParams();
 
-  const [data, setData] = useState(initialData);
+  const [Data, setData] = useState(initialData);
   const [directdata,setdirectdata] = useState();
   const [indirectdata,setIndirectData] = useState();
   const [finaldata,setfinaldata] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [savedData, setSavedData] = useState([]);
+  const [refreshdata,setRefreshData] =useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,18 +44,21 @@ const EditableTable = () => {
             const {data} = response;
             const {indirectPo} = data;
             const {values} = indirectPo
+            console.log(Data.courseOutcome);
+            if(Data.courseOutcome === ' default Values get from Course End Survey'){
             setData({courseOutcome:"Values get from Course End Survey", CO1:values[0],CO2:values[1],CO3:values[2],CO4:values[3],CO5:values[4],CO6:values[5]})
+            }
             setdirectdata(data["directPoAttainment"])
             setIndirectData(data["indirectPo"]);
             setfinaldata(data["finalCoPoPso"])
-            console.log(indirectdata);
+            // console.log(indirectdata);
         } catch (error) {
             console.error(error)
         }
     }
     fetchdata(subjectdataid);
     
-  },[isEditing] )
+  },[refreshdata] )
   
 
   const handleEdit = () => {
@@ -63,26 +67,27 @@ const EditableTable = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    setSavedData(data);
+    setSavedData(Data);
   };
 
   const handleSubmit = async () => {
     const payload = {
       values: [
-        data.CO1,
-        data.CO2,
-        data.CO3,
-        data.CO4,
-        data.CO5,
-        data.CO6
+        Data.CO1,
+        Data.CO2,
+        Data.CO3,
+        Data.CO4,
+        Data.CO5,
+        Data.CO6
       ]
     };
     console.log(payload);
     try {
       const response = await axios.post(`http://localhost:8000/direct-indirect/${subjectdataid}`, payload);
-      console.log("Data submitted successfully:", response.data);
+      // console.log("Data submitted successfully:", response.data);
       if(response.status===200){
         toast.success("Data Submitted Succesfully")
+        setRefreshData(!refreshdata);
       }
     } catch (error) {
       console.error("Error submitting data:", error);
@@ -106,7 +111,7 @@ const EditableTable = () => {
         <tbody>
           <tr>
             <td colSpan={2}>
-              <span>{data.courseOutcome}</span>
+              <span>{Data.courseOutcome}</span>
               {isEditing ? (
                 <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
               ) : (
@@ -121,11 +126,11 @@ const EditableTable = () => {
                     style={{ maxWidth: "80px" }}
                     type="number"
                     name={col}
-                    value={data[col]}
+                    value={Data[col]}
                     onChange={handleChange}
                   />
                 ) : (
-                  <span>{data[col]}</span>
+                  <span>{Data[col]}</span>
                 )}
               </td>
             ))}

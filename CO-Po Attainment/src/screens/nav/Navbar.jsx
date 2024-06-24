@@ -1,31 +1,34 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
-  const navbarStyle = {
-    backgroundColor: '#444',
-    color: "#aa21da",
-    padding: '10px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'relative', 
-    top: 0,
-    left: isSidebarOpen ? '20vw' : '0',
-    width: isSidebarOpen ? '80vw' : '100vw', 
-    transition: 'width 0.2s ease', 
-  };
-
+const Navbar = ({ toggleSidebar }) => {
   return (
-    <nav style={navbarStyle} >
-      <div>
-        <button onClick={toggleSidebar} style={{ backgroundColor: 'transparent', border: 'none', color: '#fff', fontSize: '24px', cursor: 'pointer',marginLeft:"10px" }}>☰</button>
-      </div>
-      <div className='flex'>
-        <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex' }}>
-          <li style={{ marginRight: '20px' }}><a href="/" style={{ color: '#fff', textDecoration: 'none' }}>Home</a></li>
-          <li style={{ marginRight: '20px' }}><a href="/about" style={{ color: '#fff', textDecoration: 'none' }}>About</a></li>
-          <li><a href="/contact" style={{ color: '#fff', textDecoration: 'none' }}>Contact</a></li>
-        </ul>
+    <nav className='navbar navbar-expand-lg navbar-primary bg-primary'>
+      <div className='container-fluid'>
+        <button 
+          onClick={toggleSidebar} 
+          className='btn btn-primary' 
+          style={{ 
+            border: 'none', 
+            color: '#fff', 
+            fontSize: '24px', 
+            cursor: 'pointer' 
+          }}>
+          ☰
+        </button>
+        <div className='collapse navbar-collapse'>
+          <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
+            <li className='nav-item'>
+              <a className='nav-link text-white' href='/'>Home</a>
+            </li>
+            <li className='nav-item'>
+              <a className='nav-link text-white' href='/about'>About</a>
+            </li>
+            <li className='nav-item'>
+              <a className='nav-link text-white' href='/contact'>Contact</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

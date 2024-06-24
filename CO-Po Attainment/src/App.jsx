@@ -1,4 +1,6 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -19,6 +21,7 @@ import CourseObjectiveTable from './screens/Course/CourseObjective';
 import AttainmentTables from './screens/attainment/AttainmentTables';
 import DirectIndirect from './screens/directindirect/DirectIndirect';
 import EditableTable from './screens/directindirect/DirectIndirect';
+import AddBatch from './screens/admin/AddBatch';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -95,6 +98,16 @@ const login = (credentials) => {
               element={
                 isAuthenticated ? (
                   <AddTeacherForm />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/add-batch"
+              element={
+                isAuthenticated ? (
+                  <AddBatch />
                 ) : (
                   <Navigate to="/login" />
                 )

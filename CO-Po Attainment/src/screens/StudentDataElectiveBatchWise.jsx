@@ -76,9 +76,9 @@ function StudentDataElectiveBatchWise() {
     };
 
     return (
-        <div className='container-fluid vw-50 vh-100 d-flex flex-column align-items-center justify-content-start pt-5'>
+        <div className='vw-100 vh-100 d-flex flex-column align-items-center justify-content-start pt-5'>
             <div className='mb-3  mx-auto'>
-                <div className='ms-3'>Enter The Batch Year</div>
+                <div className='text-center m-2 fs-4'>Enter The Batch Year</div>
                 <DropdownButton
                     id="dropdown-basic-button"
                     title={selectedBatchYear}

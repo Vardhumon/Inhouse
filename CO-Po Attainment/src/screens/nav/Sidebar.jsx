@@ -57,13 +57,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <Link to="/" onClick={handleLinkClick} style={{ textDecoration: 'none', color: '#333' }}>Dashboard</Link>
         </li>
         <li style={liStyle}>
-          <Link to="/course-outcome" onClick={handleLinkClick} style={{ textDecoration: 'none', color: '#333' }}>Course Outcome</Link>
-        </li>
-        <li style={liStyle}>
           <button onClick={toggleDropdown} style={{ backgroundColor: 'transparent', border: 'none', cursor: 'pointer', textDecoration: 'none', color: '#333', width: '100%', textAlign: 'left' }}>
             Admin {isDropdownOpen ? '▲' : '▼'}
           </button>
           <ul style={{ ...ulStyle, ...dropdownStyle }}>
+            <li style={liStyle}>
+              <Link to="/add-batch" onClick={handleLinkClick} style={{ textDecoration: 'none', color: '#333' }}>Add Batch</Link>
+            </li>
             <li style={liStyle}>
               <Link to="/add-teacher" onClick={handleLinkClick} style={{ textDecoration: 'none', color: '#333' }}>Add Teacher</Link>
             </li>

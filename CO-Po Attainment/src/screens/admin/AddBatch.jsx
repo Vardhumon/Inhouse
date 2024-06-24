@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AddTeacherForm.css'; // Assuming you have a CSS file to import
+import './AddTeacherForm.css'; // Using the same CSS
+import toast from 'react-hot-toast';
 
-function AddTeacherForm() {
-
+function AddBatch() {
     const subjectsSemIII = [
         { "210241": "Discrete Mathematics" },
         { "210242": "Fundamentals of Data Structures" },
@@ -56,41 +56,31 @@ function AddTeacherForm() {
     ];
 
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        isAdmin: false,
+        batchyear: '',
         subjects: []
     });
 
     const handleChange = (event) => {
-        const { name, value, type, checked } = event.target;
+        const { name, value } = event.target;
         setFormData({
             ...formData,
-            [name]: type === 'checkbox' ? checked : value
-        });
-    };
-    const handleChangeadmin = (event) => {
-        const { name, value, type, checked } = event.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value==='on'?true:false
+            [name]: value
         });
     };
 
     const handleCheckboxChange = (event) => {
         const { value, checked } = event.target;
-        const [code, name] = value.split(':');
+        const [subject_code, subject_name] = value.split(':');
 
         if (checked) {
             setFormData(prevFormData => ({
                 ...prevFormData,
-                subjects: [...prevFormData.subjects, { code, name }]
+                subjects: [...prevFormData.subjects, { subject_code, subject_name }]
             }));
         } else {
             setFormData(prevFormData => ({
                 ...prevFormData,
-                subjects: prevFormData.subjects.filter(subject => subject.code !== code)
+                subjects: prevFormData.subjects.filter(subject => subject.subject_code !== subject_code)
             }));
         }
     };
@@ -102,47 +92,32 @@ function AddTeacherForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await axios.post('http://localhost:8000/addteacher', formData, {
+        // Dummy axios post request
+        const response =await axios.post('http://localhost:8000/batch', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then(response => {
+                if(response.status === 200){
+                    toast.success("Batch Created Successfully")
+                }
                 console.log(response.data);
             })
             .catch(error => {
                 console.error('There was a problem with your Axios request:', error);
             });
+
+        console.log(formData);
     };
 
     return (
-        <div className="">
-            <h1 className="text-center mb-4">Add Teachers</h1>
+        <div>
+            <h1 className="text-center mb-4">Add Batch</h1>
             <form className="border p-4 rounded shadow" onSubmit={handleSubmit}>
                 <div className="form-group my-2">
-                    <label htmlFor="name" className="fs-5">Name</label>
-                    <input type="text" className="form-control" id="name" name="name" placeholder="Enter Name" onChange={handleChange} />
-                </div>
-                <div className="form-group my-2">
-                    <label htmlFor="email" className="fs-5">Email address</label>
-                    <input type="email" className="form-control" id="email" name="email" placeholder="Enter email" onChange={handleChange} />
-                </div>
-                <div className="form-group my-2">
-                    <label htmlFor="password" className="fs-5">Password</label>
-                    <input type="password" className="form-control" id="password" name="password" placeholder="Enter Password" onChange={handleChange} />
-                </div>
-                <div className="form-check my-3">
-                    <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id="isAdmin"
-                        name="isAdmin"
-                        checked={formData.isAdmin}
-                        onChange={handleChangeadmin}
-                    />
-                    <label className="form-check-label" htmlFor="isAdmin">
-                        Admin Privileges
-                    </label>
+                    <label htmlFor="batchyear" className="fs-5">Batch Year</label>
+                    <input type="text" className="form-control" id="batchyear" name="batchyear" placeholder="Enter Batch Year" onChange={handleChange} />
                 </div>
                 <div className="my-4">
                     <h2 className="fs-4">Select Subjects</h2>
@@ -170,12 +145,10 @@ function AddTeacherForm() {
                         ))}
                     </div>
                 </div>
-                <div className='mt-3 w-100 d-flex justify-content-center'>
-                <button type="submit" className="btn btn-primary rounded-l w-50">Submit</button>
-                </div>
+                <button type="submit" className="btn btn-primary mt-3 w-100">Submit</button>
             </form>
         </div>
     );
 }
 
-export default AddTeacherForm;
+export default AddBatch;

@@ -10,47 +10,50 @@ const fetchData = async (subdataid) => {
     return objective;
 };
 
-
 function CourseObjectiveTable() {
     const [data, setData] = useState([]);
-    const {subjectdataid,subname} = useParams();
+    const { subjectdataid, subname } = useParams();
     const navigate = useNavigate();
-    console.log(subname);
+
     useEffect(() => {
         const fetchDataAsync = async () => {
             try {
                 const outcome = await fetchData(subjectdataid);
-                const formattedData = outcome["objectives"];
+                const formattedData = outcome.objectives;
                 setData(formattedData);
+                setEditedData([...formattedData]); // Initialize editedData
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchDataAsync();
-    }, []);
+    }, [subjectdataid]);
 
-    const [editIndex, setEditIndex] = useState(null);
+    const [editMode, setEditMode] = useState(false);
     const [editedData, setEditedData] = useState([]);
 
     useEffect(() => {
         setEditedData([...data]);
     }, [data]);
 
-    const handleEdit = (index) => {
-        setEditIndex(index);
-        setEditedData([...data]); 
+    const handleEditAll = () => {
+        if (!editMode) {
+            // Enable edit mode
+            setEditMode(true);
+        } else {
+            // Save changes
+            setEditMode(false);
+            setData([...editedData]);
+        }
     };
 
     const handleInputChange = (event, index) => {
-        const newData = [...editedData];
-        newData[index] = event.target.value;
-        setEditedData(newData);
-    };
-
-    const handleSave = (index) => {
-        setEditIndex(null);
-        setData([...editedData]); 
+        if (editMode) {
+            const newData = [...editedData];
+            newData[index] = event.target.value;
+            setEditedData(newData);
+        }
     };
 
     const submitData = async () => {
@@ -74,16 +77,19 @@ function CourseObjectiveTable() {
     };
 
     const navigateToCourseOutcome = () => {
-        navigate(`/${subname}/course-outcome/${subjectdataid}`); // Adjust the URL structure as needed
+        navigate(`/${subname}/course-outcome/${subjectdataid}`);
+    };
+    const navigateToDashboard = () => {
+        navigate(`/`);
     };
 
     return (
-        <div className="container py-4 w-100 h-50">
+        <div className="m-4 py-4">
             <table className="table table-bordered">
                 <thead className="bg-danger text-white text-center">
-                    <tr>
-                        <th scope="col" className="col-2">Sr.No</th>
-                        <th scope="col" className="col-10">Course Objectives</th>
+                    <tr className='table-primary'>
+                        <th scope="col" className="col-2 fs-4 align-middle">Sr.No</th>
+                        <th scope="col" className="col-10 fs-4 align-middle">Course Objectives</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,15 +97,9 @@ function CourseObjectiveTable() {
                         <tr key={index}>
                             <td className="align-middle text-center">
                                 <span className='fs-5'>{index + 1}</span>
-                                <button
-                                    className={`btn btn-sm ${editIndex === index ? 'btn-success' : 'btn-light border border-3'} ms-2`}
-                                    onClick={() => editIndex === index ? handleSave(index) : handleEdit(index)}
-                                >
-                                    {editIndex === index ? 'Save' : 'Edit'}
-                                </button>
                             </td>
                             <td className="align-middle">
-                                {editIndex === index ? (
+                                {editMode ? (
                                     <input
                                         type="text"
                                         className="form-control fs-5"
@@ -113,11 +113,23 @@ function CourseObjectiveTable() {
                         </tr>
                     ))}
                 </tbody>
-                <button className='ms-5' onClick={submitData}>Submit</button>
             </table>
-            <button className='btn btn-primary position-fixed bottom-0 end-0 m-4' onClick={navigateToCourseOutcome}>
-                Go to Course Outcome
-            </button>
+            <div className="d-flex flex-column flex-md-row justify-content-between fixed-bottom bg-white p-3">
+                <div className="d-flex justify-content-start">
+                    <button className='btn btn-warning me-2 mb-2 mb-md-0' onClick={handleEditAll}>
+                        {editMode ? 'Save All Changes' : 'Edit All'}
+                    </button>
+                    <button className='btn btn-success' onClick={submitData}>Submit</button>
+                </div>
+                <div className="d-flex justify-content-end">
+                    <button className='btn btn-secondary me-2 mb-2 mb-md-0' onClick={navigateToDashboard}>
+                        Back to Dashboard
+                    </button>
+                    <button className='btn btn-primary' onClick={navigateToCourseOutcome}>
+                        Go to Course Outcome
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
