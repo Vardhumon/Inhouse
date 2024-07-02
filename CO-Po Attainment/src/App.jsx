@@ -114,7 +114,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/student-detail/:subjectdataid"
+              path=":batchYear/:subname/student-detail/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <StudentDetailTemp />
@@ -154,7 +154,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path="/student-detail-temp"
+              path=":batchYear/student-detail-temp"
               element={
                 isAuthenticated ? (
                   <StudentDetailTemp />
@@ -164,7 +164,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/pso-table/:subjectdataid"
+              path=":batchYear/:subname/pso-table/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <PsoTable />
@@ -174,7 +174,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/course-outcome/:subjectdataid"
+              path=":batchYear/:subname/course-outcome/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <CourseOutcome />
@@ -184,7 +184,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/course-objective/:subjectdataid"
+              path=":batchYear/:subname/course-objective/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <CourseObjectiveTable />
@@ -194,7 +194,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/attainment-tables/:subjectdataid"
+              path=":batchYear/:subname/attainment-tables/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <AttainmentTables />
@@ -204,7 +204,7 @@ const login = (credentials) => {
               }
             />
             <Route
-              path=":subname/direct-indirect/:subjectdataid"
+              path=":batchYear/:subname/direct-indirect/:subjectdataid"
               element={
                 isAuthenticated ? (
                   <EditableTable />

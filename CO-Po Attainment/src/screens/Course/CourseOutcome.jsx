@@ -12,7 +12,7 @@ const fetchData = async (subdataid) => {
 
 function CourseOutcome() {
     const [data, setData] = useState([]);
-    const { subname, subjectdataid } = useParams();
+    const { subname, subjectdataid ,batchYear} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -88,11 +88,11 @@ function CourseOutcome() {
     };
 
     const navigateToCourseObjectives = () => {
-        navigate(`/${subname}/course-objective/${subjectdataid}`);
+        navigate(`/${batchYear}/${subname}/course-objective/${subjectdataid}`);
     };
 
     const navigateToPSOTable = () => {
-        navigate(`/${subname}/pso-table/${subjectdataid}`);
+        navigate(`/${batchYear}/${subname}/pso-table/${subjectdataid}`);
     };
 
     return (

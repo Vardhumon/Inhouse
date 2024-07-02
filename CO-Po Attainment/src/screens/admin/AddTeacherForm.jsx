@@ -117,18 +117,17 @@ function AddTeacherForm() {
 
     return (
         <div className="">
-            <h1 className="text-center mb-4">Add Teachers</h1>
             <form className="border p-4 rounded shadow" onSubmit={handleSubmit}>
                 <div className="form-group my-2">
-                    <label htmlFor="name" className="fs-5">Name</label>
+                    <label htmlFor="name" className="fs-4">Name</label>
                     <input type="text" className="form-control" id="name" name="name" placeholder="Enter Name" onChange={handleChange} />
                 </div>
                 <div className="form-group my-2">
-                    <label htmlFor="email" className="fs-5">Email address</label>
+                    <label htmlFor="email" className="fs-4">Email address</label>
                     <input type="email" className="form-control" id="email" name="email" placeholder="Enter email" onChange={handleChange} />
                 </div>
                 <div className="form-group my-2">
-                    <label htmlFor="password" className="fs-5">Password</label>
+                    <label htmlFor="password" className="fs-4">Password</label>
                     <input type="password" className="form-control" id="password" name="password" placeholder="Enter Password" onChange={handleChange} />
                 </div>
                 <div className="form-check my-3">
@@ -149,7 +148,7 @@ function AddTeacherForm() {
                     <div className="row">
                         {[subjectsSemIII, subjectsSemIV, subjectsSemV, subjectsSemVI].map((subjects, semesterIndex) => (
                             <div className="col-md-6 col-lg-3 mb-3" key={semesterIndex}>
-                                <div className="border rounded p-3">
+                                <div className="border rounded p-3 bg-white">
                                     <h3 className="fs-5">Sem {semesterIndex + 3}</h3>
                                     {subjects.map((subject, index) => (
                                         <div className="form-check" key={index}>
@@ -170,8 +169,8 @@ function AddTeacherForm() {
                         ))}
                     </div>
                 </div>
-                <div className='mt-3 w-100 d-flex justify-content-center'>
-                <button type="submit" className="btn btn-primary rounded-l w-50">Submit</button>
+                <div className='mt-3 w-100 d-flex justify-content-start'>
+                <button type="submit" className="btn btn-primary rounded-l w-25 fs-5">Submit</button>
                 </div>
             </form>
         </div>

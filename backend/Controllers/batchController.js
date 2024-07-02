@@ -120,7 +120,8 @@ const createBatchStudents = async (req, res) => {
 };
 
 const getBatchStudentData = async (req, res) => {
-    const batchYear = "2021-25";
+    const {batchYear} = req.params;
+    // const batchYear = "2021-25";
     // console.log(batchYear);
     if (!batchYear) {
         return res.status(400).json({ message: "Batch year is required" });

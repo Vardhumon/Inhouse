@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import asset1 from '../../../assets/asset1.jpg'
 
 const Homepage = () => {
   const [subjects, setSubjects] = useState([]);
@@ -44,7 +45,7 @@ const Homepage = () => {
   }, [batchYear, email]);
 
   const handleCardClick = (subjectdataid, subname) => {
-    navigate(`${subname}/course-objective/${subjectdataid}`);
+    navigate(`/${batchYear}/${subname}/course-objective/${subjectdataid}`);
   };
 
   const handleSelect = (eventKey) => {
@@ -150,7 +151,12 @@ const Homepage = () => {
       <style>
         {`
           body {
-            background-color: #f8f9fa;
+            // background-color: #f8f9fa;
+            // background-color: #F2EBE3;
+  // background-image: url(${asset1});
+  background-size: cover; /* Ensure the image covers the whole background */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-attachment: fixed;
           }
           
           .navbar {
@@ -176,6 +182,8 @@ const Homepage = () => {
           
           .card {
             border: none;
+            background-color:white;
+            backdrop-filter:blur(40px);
             border-radius: 10px;
             transition: transform 0.2s;
           }

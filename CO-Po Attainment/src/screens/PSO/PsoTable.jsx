@@ -12,7 +12,7 @@ const PsoTable = () => {
   const [artdata, setArtData] = useState([]);
 
   const [showPercentages, setShowPercentages] = useState(false);
-  const { subjectdataid,subname } = useParams();
+  const { subjectdataid,subname,batchYear } = useParams();
   const [alt, setAlt] = useState(false);
   const navigate =useNavigate();
 
@@ -71,10 +71,10 @@ const PsoTable = () => {
   };
 
   const navigateToStudentDetails = () =>{
-    navigate(`/${subname}/student-detail/${subjectdataid}`)
+    navigate(`/${batchYear}/${subname}/student-detail/${subjectdataid}`)
   }
   const navigateToCourseOutcome = () =>{
-    navigate(`/${subname}/course-outcome/${subjectdataid}`)
+    navigate(`/${batchYear}/${subname}/course-outcome/${subjectdataid}`)
   }
 
   return (

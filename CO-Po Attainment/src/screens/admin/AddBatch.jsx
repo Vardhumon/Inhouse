@@ -113,18 +113,17 @@ function AddBatch() {
 
     return (
         <div>
-            <h1 className="text-center mb-4">Add Batch</h1>
             <form className="border p-4 rounded shadow" onSubmit={handleSubmit}>
                 <div className="form-group my-2">
-                    <label htmlFor="batchyear" className="fs-5">Batch Year</label>
-                    <input type="text" className="form-control" id="batchyear" name="batchyear" placeholder="Enter Batch Year" onChange={handleChange} />
+                    <label htmlFor="batchyear" className="fs-4">Batch Year</label>
+                    <input type="text" className="form-control" id="batchyear" name="batchyear" placeholder="Ex. 2021-25" onChange={handleChange} />
                 </div>
                 <div className="my-4">
                     <h2 className="fs-4">Select Subjects</h2>
-                    <div className="row">
+                    <div className="row ">
                         {[subjectsSemIII, subjectsSemIV, subjectsSemV, subjectsSemVI].map((subjects, semesterIndex) => (
-                            <div className="col-md-6 col-lg-3 mb-3" key={semesterIndex}>
-                                <div className="border rounded p-3">
+                            <div className="col-md-6 col-lg-3 mb-3" key={semesterIndex} >
+                                <div className="border rounded p-3  bg-white">
                                     <h3 className="fs-5">Sem {semesterIndex + 3}</h3>
                                     {subjects.map((subject, index) => (
                                         <div className="form-check" key={index}>

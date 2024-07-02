@@ -11,8 +11,8 @@ const fetchStudentDetails = async (subjectdataid) => {
     return backendData[0];
 };
 
-const fetchBackendData = async () => {
-    const response = await fetch('http://localhost:8000/getbatchstudentdata'); // Replace with your API endpoint
+const fetchBackendData = async (batchYear) => {
+    const response = await fetch(`http://localhost:8000/getbatchstudentdata/${batchYear}`); // Replace with your API endpoint
     const studentDetails = await response.json();
     const stuarr = studentDetails.studentdata.flat();
     // console.log("imp", stuarr);
@@ -64,7 +64,66 @@ function StudentDetailTemp() {
                     "total": 20
                 }
 ]});
-    const [students, setStudents] = useState([]);
+    const [students, setStudents] = useState([{
+        "name": "",
+        "roll": "",
+        "prn": "",
+        "ese": 0,
+        "midsem": 0,
+        "pr_or": 0,
+        "termwork": 0,
+        "CO1": [
+            0,
+            0,
+        ],
+        "CO2": [
+            0,
+            0
+        ],
+        "CO3": [
+            0,
+            0
+        ],
+        "CO4": [
+            0,
+            0
+        ],
+        "CO5": [
+            0
+        ],
+        "CO6": [
+            0
+        ],
+        "total": 0,
+        "co1": {
+            "UT1": 0,
+            "CW": 0,
+            "Total": 0
+        },
+        "co2": {
+            "UT1": 0,
+            "CW": 0,
+            "Total": 0
+        },
+        "co3": {
+            "UT2": 0,
+            "CW": 0,
+            "Total": 0
+        },
+        "co4": {
+            "UT2": 0,
+            "CW": 0,
+            "Total": 0
+        },
+        "co5": {
+            "CW": 0,
+            "Total": 0
+        },
+        "co6": {
+            "CW": 0,
+            "Total": 0
+        }
+    }]);
     const [backendStudents, setBackendStudents] = useState([]);
     const [studentDetails, setStudentDetails] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
@@ -72,10 +131,11 @@ function StudentDetailTemp() {
     const [columnTotal, setcolumnTotal] = useState([]);
     const [finalTotalData, setfinalTotalData] = useState({});
     const [DataForAttainment,setDataForAttainment] = useState();
-    const {subjectdataid,subname} = useParams();
+    const {subjectdataid,subname,batchYear} = useParams();
     const [miscData,setMiscData] = useState();
     const [showmisc,setShowMisc] = useState(false);
     const navigate = useNavigate();
+    
 
 
     const fetchMarking = async (subjectdataid) => {
@@ -95,7 +155,7 @@ function StudentDetailTemp() {
         const fetchData = async () => {
             try {
                 const backendData = await fetchStudentDetails(subjectdataid);
-                const studentdata = await fetchBackendData();
+                const studentdata = await fetchBackendData(batchYear);
                 setBackendStudents(backendData);
                 // console.log(backendData,"backend");
                 setStudentDetails(studentdata);
@@ -431,10 +491,10 @@ function StudentDetailTemp() {
     };
 
     const navigateToAttainment =() =>{
-        navigate(`/${subname}/attainment-tables/${subjectdataid}`)
+        navigate(`/${batchYear}/${subname}/attainment-tables/${subjectdataid}`)
     }
     const navigateToCoPo =() =>{
-        navigate(`/${subname}/pso-table/${subjectdataid}`)
+        navigate(`/${batchYear}/${subname}/pso-table/${subjectdataid}`)
     }
 
     return (

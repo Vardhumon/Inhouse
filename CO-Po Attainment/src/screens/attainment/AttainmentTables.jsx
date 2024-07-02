@@ -5,7 +5,7 @@ import MiscTable from '../../miscTables/MiscTable';
 
 function AttainmentTables() {
     const [data,setData] =useState(false);
-    const {subjectdataid,subname}=useParams();
+    const {subjectdataid,subname,batchYear}=useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,10 +24,10 @@ function AttainmentTables() {
     }, [])
 
     const navigateToDirectIndirect =() =>{
-        navigate(`/${subname}/direct-indirect/${subjectdataid}`)
+        navigate(`/${batchYear}/${subname}/direct-indirect/${subjectdataid}`)
     }
     const navigateToStudentDetails =() =>{
-        navigate(`/${subname}/student-detail/${subjectdataid}`)
+        navigate(`/${batchYear}/${subname}/student-detail/${subjectdataid}`)
     }
     
   return (

@@ -12,7 +12,7 @@ const fetchData = async (subdataid) => {
 
 function CourseObjectiveTable() {
     const [data, setData] = useState([]);
-    const { subjectdataid, subname } = useParams();
+    const { subjectdataid, subname ,batchYear} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -77,7 +77,7 @@ function CourseObjectiveTable() {
     };
 
     const navigateToCourseOutcome = () => {
-        navigate(`/${subname}/course-outcome/${subjectdataid}`);
+        navigate(`/${batchYear}/${subname}/course-outcome/${subjectdataid}`);
     };
     const navigateToDashboard = () => {
         navigate(`/`);
